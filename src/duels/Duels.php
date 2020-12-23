@@ -6,6 +6,9 @@ namespace duels;
 
 use duels\arena\Arena;
 use duels\arena\Level;
+use duels\listener\PlayerListener;
+use duels\session\SessionFactory;
+use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 
 class Duels extends PluginBase {
@@ -18,6 +21,8 @@ class Duels extends PluginBase {
     private static $queueFactory;
     /** @var ArenaFactory */
     private static $arenaFactory;
+    /** @var SessionFactory */
+    private static $sessionFactory;
 
     /**
      * @return Duels
@@ -47,6 +52,13 @@ class Duels extends PluginBase {
         return self::$arenaFactory;
     }
 
+    /**
+     * @return SessionFactory
+     */
+    public static function getSessionFactory(): SessionFactory {
+        return self::$sessionFactory;
+    }
+
     public function onEnable(): void {
         self::$instance = $this;
 
@@ -55,6 +67,19 @@ class Duels extends PluginBase {
         self::$queueFactory = new QueueFactory();
 
         self::$arenaFactory = new ArenaFactory();
+
+        self::$sessionFactory = new SessionFactory();
+
+        $this->registerListeners(new PlayerListener());
+    }
+
+    /**
+     * @param Listener ...$listeners
+     */
+    public function registerListeners(Listener ...$listeners): void {
+        foreach ($listeners as $listener) {
+            $this->getServer()->getPluginManager()->registerEvents($listener, $this);
+        }
     }
 
     /**
