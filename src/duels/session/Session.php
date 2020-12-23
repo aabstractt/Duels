@@ -21,6 +21,8 @@ class Session {
     private $arena;
     /** @var bool */
     private $energized = false;
+    /** @var int */
+    private $queueWaitingTime = 0;
 
     /**
      * Session constructor.
@@ -55,6 +57,13 @@ class Session {
         }
 
         return $player;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQueueWaitingTime(): int {
+        return $this->queueWaitingTime;
     }
 
     /**
@@ -94,6 +103,19 @@ class Session {
      */
     public function setImmobile(bool $value = true): void {
         $this->getGeneralPlayer()->setImmobile($value);
+    }
+
+    /**
+     * @param int $queueWaitingTime
+     */
+    public function increaseQueueWaitingTime(int $queueWaitingTime = 0): void {
+        if ($queueWaitingTime == 1) {
+            $this->queueWaitingTime = 0;
+
+            return;
+        }
+
+        $this->queueWaitingTime++;
     }
 
     /**
