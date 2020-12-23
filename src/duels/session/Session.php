@@ -110,6 +110,8 @@ class Session {
     public function isInsideArena(pocketLevel $level = null): bool {
         $arena = $this->arena;
 
+        if ($arena == null) return false;
+
         if ($level == null) $level = $arena->getWorld();
 
         if ($level == null) return false;
@@ -128,7 +130,11 @@ class Session {
      * @return bool
      */
     public function isSpectator(): bool {
-        return $this->getArena()->inArenaAsSpectator($this->getName());
+        $arena = $this->getArena();
+
+        if ($arena == null) return false;
+
+        return $arena->inArenaAsSpectator($this->getName());
     }
 
     /**

@@ -17,8 +17,6 @@ class Arena extends TaskHandlerStorage {
 
     /** @var int */
     public const STATUS_WAITING = 1;
-    public const STATUS_STARTING = 2;
-    public const STATUS_FULL = 3;
     public const STATUS_IN_GAME = 4;
     public const STATUS_FINISHING = 5;
 
@@ -26,9 +24,9 @@ class Arena extends TaskHandlerStorage {
     protected $level;
     /** @var string */
     protected $worldName;
-    /** @var Session[] */
+    /** @var array<string, Session> */
     protected $players = [];
-    /** @var Session[] */
+    /** @var array<string, Session> */
     protected $spectators = [];
     /** @var int */
     protected $status = self::STATUS_WAITING;
