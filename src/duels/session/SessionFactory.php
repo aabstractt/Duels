@@ -8,7 +8,7 @@ use pocketmine\Player;
 
 class SessionFactory {
 
-    /** @var array<string, Session */
+    /** @var array<string, Session> */
     private $sessions = [];
 
     /**
