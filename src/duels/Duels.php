@@ -8,6 +8,7 @@ use duels\arena\Arena;
 use duels\arena\Level;
 use duels\kit\KitFactory;
 use duels\listener\PlayerListener;
+use duels\queue\QueueFactory;
 use duels\session\SessionFactory;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
