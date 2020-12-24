@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\arena;
 
 use duels\Duels;
+use duels\kit\Kit;
 use duels\session\Session;
 
 class Queue {

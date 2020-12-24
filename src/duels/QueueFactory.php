@@ -15,6 +15,7 @@ class QueueFactory {
 
     /**
      * QueueFactory constructor.
+     * @noinspection PhpUnusedParameterInspection
      */
     public function __construct() {
         Duels::getInstance()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
@@ -38,7 +39,7 @@ class QueueFactory {
         return $this->queue[strtolower($kitName)];
     }
 
-    public function handleQueue(): void {
+    protected function handleQueue(): void {
         foreach ($this->queue as $queue) {
             $queue->update();
         }
