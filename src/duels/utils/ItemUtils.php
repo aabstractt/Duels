@@ -47,7 +47,11 @@ class ItemUtils {
 
             $enchantData = explode(';', $data[$i]);
 
-            $item->addEnchantment(new EnchantmentInstance(Enchantment::getEnchantment($enchantData[0]), $enchantData[1]));
+            $enchantment = Enchantment::getEnchantment($enchantData[0]);
+
+            if ($enchantment == null) continue;
+
+            $item->addEnchantment(new EnchantmentInstance($enchantment, (int) $enchantData[1]));
         }
 
         return $item;
