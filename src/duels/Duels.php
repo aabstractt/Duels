@@ -6,6 +6,7 @@ namespace duels;
 
 use duels\arena\Arena;
 use duels\arena\Level;
+use duels\command\ConfigCommand;
 use duels\kit\KitFactory;
 use duels\listener\PlayerListener;
 use duels\queue\QueueFactory;
@@ -73,6 +74,8 @@ class Duels extends PluginBase {
     public function onEnable(): void {
         self::$instance = $this;
 
+        self::$kitFactory = new KitFactory();
+
         self::$levelFactory = new LevelFactory();
 
         self::$queueFactory = new QueueFactory();
@@ -82,6 +85,8 @@ class Duels extends PluginBase {
         self::$sessionFactory = new SessionFactory();
 
         $this->registerListeners(new PlayerListener());
+
+        $this->getServer()->getCommandMap()->register(ConfigCommand::class, new ConfigCommand());
     }
 
     /**
