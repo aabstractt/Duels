@@ -6,6 +6,7 @@ namespace duels;
 
 use duels\arena\Arena;
 use duels\arena\Level;
+use duels\asyncio\FileDeleteAsyncTask;
 use duels\command\ConfigCommand;
 use duels\kit\KitFactory;
 use duels\queue\QueueFactory;
@@ -71,6 +72,17 @@ class Duels extends PluginBase {
      */
     public static function getKitFactory(): KitFactory {
         return self::$kitFactory;
+    }
+
+    /**
+     * @param string $worldName
+     */
+    public function removeWorld(string $worldName): void {
+        if (($level = $this->getServer()->getLevelByName($worldName)) !== null) {
+            $this->getServer()->unloadLevel($level);
+        }
+
+        $this->getServer()->getAsyncPool()->submitTask(new FileDeleteAsyncTask($this->getServer()->getDataPath() . '/worlds/' . $worldName));
     }
 
     public function onEnable(): void {
