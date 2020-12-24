@@ -6,7 +6,6 @@ namespace duels\kit;
 
 use duels\Duels;
 use duels\kit\command\KitCommand;
-use pocketmine\plugin\PluginException;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 
@@ -31,6 +30,8 @@ class KitFactory {
      */
     public function createKit(Kit $kit): void {
         $this->kits[strtolower($kit->getName())] = $kit;
+
+        Duels::getQueueFactory()->createQueue($kit);
 
         $config = new Config(Duels::getInstance()->getDataFolder() . 'kits.json');
 

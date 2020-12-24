@@ -30,6 +30,13 @@ class QueueFactory {
 
     /**
      * @param Kit $kit
+     */
+    public function createQueue(Kit $kit): void {
+        $this->queue[strtolower($kit->getName())] = new Queue($kit, false);
+    }
+
+    /**
+     * @param Kit $kit
      * @return Queue
      */
     public function getQueueByKit(Kit $kit): Queue {
