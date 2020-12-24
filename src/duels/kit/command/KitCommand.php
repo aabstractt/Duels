@@ -9,6 +9,9 @@ use duels\kit\command\subcommand\CreateCommand;
 
 class KitCommand extends Command {
 
+    /**
+     * KitCommand constructor.
+     */
     public function __construct() {
         parent::__construct('kit', 'Kit Command');
 

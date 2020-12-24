@@ -6,7 +6,9 @@ namespace duels\queue;
 
 use duels\Duels;
 use duels\kit\Kit;
+use duels\queue\command\QueueCommand;
 use pocketmine\scheduler\ClosureTask;
+use pocketmine\Server;
 
 class QueueFactory {
 
@@ -18,6 +20,8 @@ class QueueFactory {
      * @noinspection PhpUnusedParameterInspection
      */
     public function __construct() {
+        Server::getInstance()->getCommandMap()->register(QueueCommand::class, new QueueCommand());
+
         Duels::getInstance()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
             $this->handleQueue();
         }), 20);

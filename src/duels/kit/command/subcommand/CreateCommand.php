@@ -4,44 +4,37 @@ declare(strict_types=1);
 
 namespace duels\kit\command\subcommand;
 
-use duels\api\SubCommand;
+use duels\api\PlayerSubCommand;
 use duels\kit\Kit;
 use duels\utils\ItemUtils;
-use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class CreateCommand extends SubCommand {
+class CreateCommand extends PlayerSubCommand {
 
     /**
-     * @param CommandSender $sender
+     * @param Player $player
      * @param array $args
      */
-    public function run(CommandSender $sender, array $args): void {
+    public function onRun(Player $player, array $args): void {
         if (empty($args)) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /kit ' . $this->getName() . ' <name>');
-
-            return;
-        }
-
-        if (!$sender instanceof Player) {
-            $sender->sendMessage(TextFormat::RED . 'Run this command in-game');
+            $player->sendMessage(TextFormat::RED . 'Usage: /kit ' . $this->getName() . ' <name>');
 
             return;
         }
 
         $data = [];
 
-        foreach ($sender->getArmorInventory()->getContents() as $slot => $content) {
+        foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             $data['armor'][$slot] = ItemUtils::itemToString($content);
         }
 
-        foreach ($sender->getInventory()->getContents() as $slot => $content) {
+        foreach ($player->getInventory()->getContents() as $slot => $content) {
             $data['inventory'][$slot] = ItemUtils::itemToString($content);
         }
 
         (new Kit($args[0], $data))->handleUpdate();
 
-        $sender->sendMessage(TextFormat::GREEN . sprintf('Kit %s created', $args[0]));
+        $player->sendMessage(TextFormat::GREEN . sprintf('Kit %s created', $args[0]));
     }
 }
