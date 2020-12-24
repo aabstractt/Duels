@@ -138,14 +138,14 @@ class Arena extends TaskHandlerStorage {
      * @return bool
      */
     public function isWaiting(): bool {
-        return $this->status == self::STATUS_WAITING;
+        return $this->getStatus() == self::STATUS_WAITING;
     }
 
     /**
      * @return bool
      */
     public function isStarted(): bool {
-        return $this->status == self::STATUS_IN_GAME;
+        return $this->getStatus() == self::STATUS_IN_GAME;
     }
 
     /**
@@ -197,6 +197,8 @@ class Arena extends TaskHandlerStorage {
 
         $this->scoreboard->addPlayer();
 
+        $slot = 1;
+
         foreach ($sessions as $session) {
             $this->addSession($session);
 
@@ -220,6 +222,10 @@ class Arena extends TaskHandlerStorage {
 
             $session->setDefaultLobbyAttributes();
 
+            $session->setSlot($slot++);
+
+            $session->teleport($this->level->getSlotPosition($session->getSlot(), $this->getWorld()));
+
             $this->level->getKit()->giveKit($session);
         }
     }
@@ -236,7 +242,7 @@ class Arena extends TaskHandlerStorage {
 
         if (count($this->getAllPlayers()) !== 0) return;
 
-        //Duels::getInstance()->removeWorld($this->getWorldName());
+        Duels::getInstance()->removeWorld($this->getWorldName());
     }
 
     /**

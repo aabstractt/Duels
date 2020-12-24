@@ -29,6 +29,8 @@ class Session {
     private $lobbyItemsEnabled = true;
     /** @var string|null */
     private $opponentName = null;
+    /** @var int */
+    private $slot = 0;
 
     /**
      * Session constructor.
@@ -227,6 +229,20 @@ class Session {
 
             $this->opponentName = $session->getName();
         }
+    }
+
+    /**
+     * @param int $slot
+     */
+    public function setSlot(int $slot): void {
+        $this->slot = $slot;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSlot(): int {
+        return $this->slot;
     }
 
     /**
