@@ -10,15 +10,15 @@ abstract class SubCommand {
 
     /** @var string */
     private $name;
-    /** @var string */
+    /** @var string|null */
     private $permission;
 
     /**
      * SubCommand constructor.
      * @param string $name
-     * @param string $permission
+     * @param string|null $permission
      */
-    public function __construct(string $name, string $permission) {
+    public function __construct(string $name, string $permission = null) {
         $this->name = $name;
 
         $this->permission = $permission;
@@ -32,9 +32,9 @@ abstract class SubCommand {
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPermission(): string {
+    public function getPermission(): ?string {
         return $this->permission;
     }
 

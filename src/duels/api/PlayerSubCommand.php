@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace duels\api;
 
+use duels\Duels;
+use duels\session\Session;
+use duels\session\SessionException;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -20,11 +23,17 @@ abstract class PlayerSubCommand extends SubCommand {
 
             return;
         }
+
+        try {
+            $this->onRun(Duels::getSessionFactory()->getSessionPlayer($sender), $args);
+        } catch (SessionException $exception) {
+            $sender->kick($exception->getMessage());
+        }
     }
 
     /**
-     * @param Player $player
+     * @param Session $session
      * @param array $args
      */
-    public abstract function onRun(Player $player, array $args): void;
+    public abstract function onRun(Session $session, array $args): void;
 }

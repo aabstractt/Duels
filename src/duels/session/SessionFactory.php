@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace duels\session;
 
+use duels\Duels;
 use pocketmine\Player;
 
 class SessionFactory {
@@ -20,17 +21,27 @@ class SessionFactory {
 
     /**
      * @param Player $player
-     * @return Session|null
+     * @return Session
      */
-    public function getSessionPlayer(Player $player): ?Session {
-        return $this->sessions[strtolower($player->getName())] ?? null;
+    public function getSessionPlayer(Player $player): Session {
+        $session = $this->sessions[strtolower($player->getName())] ?? null;
+
+        if ($session == null) {
+            throw new SessionException('Invalid session for ' . $player->getName());
+        }
+
+        return $session;
     }
 
     /**
      * @param Player $player
      */
     public function removeSession(Player $player): void {
-        if (empty($this->sessions[strtolower($player->getName())])) return;
+        $session = $this->sessions[strtolower($player->getName())] ?? null;
+
+        if ($session == null) return;
+
+        Duels::getQueueFactory()->removeSessionFromQueue($session);
 
         unset($this->sessions[strtolower($player->getName())]);
     }

@@ -7,6 +7,7 @@ namespace duels\queue;
 use duels\Duels;
 use duels\kit\Kit;
 use duels\queue\command\QueueCommand;
+use duels\session\Session;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 
@@ -29,18 +30,43 @@ class QueueFactory {
 
     /**
      * @param Kit $kit
-     * @return Queue|null
+     * @return Queue
      */
-    public function getQueueByKit(Kit $kit): ?Queue {
+    public function getQueueByKit(Kit $kit): Queue {
         return $this->getQueueByKitName($kit->getName());
     }
 
     /**
      * @param string $kitName
+     * @return Queue
+     */
+    public function getQueueByKitName(string $kitName): Queue {
+        return $this->queue[strtolower($kitName)];
+    }
+
+    /**
+     * @param Session $session
+     */
+    public function removeSessionFromQueue(Session $session): void {
+        foreach ($this->queue as $queue) {
+            if (!$queue->hasSession($session)) continue;
+
+            $queue->removeSession($session);
+        }
+    }
+
+    /**
+     * @param Session $session
      * @return Queue|null
      */
-    public function getQueueByKitName(string $kitName): ?Queue {
-        return $this->queue[strtolower($kitName)] ?? null;
+    public function getSessionQueue(Session $session): ?Queue {
+        foreach ($this->queue as $queue) {
+            if (!$queue->hasSession($session)) continue;
+
+            return $queue;
+        }
+
+        return null;
     }
 
     protected function handleQueue(): void {

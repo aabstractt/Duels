@@ -44,9 +44,26 @@ class Queue {
 
     /**
      * @param Session $session
+     * @return bool
      */
-    public function addSession(Session $session): void {
+    public function hasSession(Session $session): bool {
+        return isset($this->sessions[strtolower($session->getName())]);
+    }
+
+    /**
+     * @param Session $session
+     * @return bool
+     */
+    public function addSession(Session $session): bool {
+        if (isset($this->sessions[strtolower($session->getName())])) return false;
+
+        Duels::getQueueFactory()->removeSessionFromQueue($session);
+
+        $session->increaseQueueWaitingTime(1);
+
         $this->sessions[strtolower($session->getName())] = $session;
+
+        return true;
     }
 
     /**
@@ -58,6 +75,9 @@ class Queue {
         unset($this->sessions[strtolower($session->getName())]);
     }
 
+    /**
+     * Search a opponent and arena
+     */
     public function update(): void {
         $sessionsAvailable = [];
 
@@ -73,6 +93,8 @@ class Queue {
             if ($session->getArena() !== null) continue;
 
             $sessionsAvailable[strtolower($session->getName())] = $session;
+
+            $session->increaseQueueWaitingTime(1);
         }
 
         Duels::getArenaFactory()->createArena($sessionsAvailable);

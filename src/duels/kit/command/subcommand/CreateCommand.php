@@ -16,7 +16,7 @@ class CreateCommand extends PlayerSubCommand {
      * @param Player $player
      * @param array $args
      */
-    public function onRun(Player $player, array $args): void {
+    public function onRun(Session $session, array $args): void {
         if (empty($args)) {
             $player->sendMessage(TextFormat::RED . 'Usage: /kit ' . $this->getName() . ' <name>');
 

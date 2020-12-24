@@ -6,46 +6,46 @@ namespace duels\command\subcommand;
 
 use duels\api\PlayerSubCommand;
 use duels\Duels;
-use pocketmine\Player;
+use duels\session\Session;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class SpawnCommand extends PlayerSubCommand {
 
     /**
-     * @param Player $player
+     * @param Session $session
      * @param array $args
      */
-    public function onRun(Player $player, array $args): void {
+    public function onRun(Session $session, array $args): void {
         if (empty($args[0])) {
-            $player->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <slot>');
+            $session->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <slot>');
 
             return;
         }
 
-        if ($player->getLevelNonNull() === Server::getInstance()->getDefaultLevel()) {
-            $player->sendMessage(TextFormat::RED . 'You can\'t setup maps in the lobby.');
+        if ($session->getLevelNonNull() === Server::getInstance()->getDefaultLevel()) {
+            $session->sendMessage(TextFormat::RED . 'You can\'t setup maps in the lobby.');
 
             return;
         }
 
-        $level = Duels::getLevelFactory()->getLevel($player->getLevelNonNull()->getFolderName());
+        $level = Duels::getLevelFactory()->getLevel($session->getLevelNonNull()->getFolderName());
 
         if ($level == null) {
-            $player->sendMessage(TextFormat::RED . 'This arena doesn\'t exist.');
+            $session->sendMessage(TextFormat::RED . 'This arena doesn\'t exist.');
 
             return;
         }
 
         if (!is_numeric(($slot = (int)$args[1])) || $slot < 1 || $slot > $level->getMaxSlots()) {
-            $player->sendMessage(TextFormat::RED . 'You must specify a slot between 1-' . $level->getMaxSlots() . '.');
+            $session->sendMessage(TextFormat::RED . 'You must specify a slot between 1-' . $level->getMaxSlots() . '.');
 
             return;
         }
 
-        $level->addSlotPosition($slot, ($loc = $player->getLocation()));
+        $level->addSlotPosition($slot, ($loc = $session->getGeneralPlayer()->getLocation()));
 
-        $player->sendMessage(TextFormat::BLUE . 'Spawn ' . $slot . ' set to §6X:§b ' . $loc->getX() . ' §6Y:§b ' . $loc->getY() . ' §6Z:§b ' . $loc->getZ() . ' §6Yaw:§b ' . $loc->getYaw() . ' §6Pitch:§b ' . $loc->getPitch());
+        $session->sendMessage(TextFormat::BLUE . 'Spawn ' . $slot . ' set to §6X:§b ' . $loc->getX() . ' §6Y:§b ' . $loc->getY() . ' §6Z:§b ' . $loc->getZ() . ' §6Yaw:§b ' . $loc->getYaw() . ' §6Pitch:§b ' . $loc->getPitch());
 
         $level->handleUpdate();
     }

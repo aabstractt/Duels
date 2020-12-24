@@ -6,7 +6,7 @@ namespace duels\session;
 
 use duels\arena\Arena;
 use duels\math\GameVector3;
-use pocketmine\level\Level as pocketLevel;
+use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\plugin\PluginException;
@@ -57,6 +57,13 @@ class Session {
         }
 
         return $player;
+    }
+
+    /**
+     * @return Level
+     */
+    public function getLevelNonNull(): Level {
+        return $this->getGeneralPlayer()->getLevelNonNull();
     }
 
     /**
@@ -126,10 +133,10 @@ class Session {
     }
 
     /**
-     * @param pocketLevel|null $level
+     * @param Level|null $level
      * @return bool
      */
-    public function isInsideArena(pocketLevel $level = null): bool {
+    public function isInsideArena(Level $level = null): bool {
         $arena = $this->arena;
 
         if ($arena == null) return false;

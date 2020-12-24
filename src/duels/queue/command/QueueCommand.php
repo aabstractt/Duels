@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace duels\queue\command;
 
 use duels\api\Command;
+use duels\queue\command\subcommand\JoinCommand;
+use duels\queue\command\subcommand\LeaveCommand;
 
 class QueueCommand extends Command {
 
@@ -13,5 +15,10 @@ class QueueCommand extends Command {
      */
     public function __construct() {
         parent::__construct('queue', 'Queue command', '/queue help');
+
+        $this->addCommand(
+            new JoinCommand('join'),
+            new LeaveCommand('leave')
+        );
     }
 }
