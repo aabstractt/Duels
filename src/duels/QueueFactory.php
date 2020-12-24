@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace duels;
 
-use duels\arena\Kit;
 use duels\arena\Queue;
+use duels\kit\Kit;
 use pocketmine\scheduler\ClosureTask;
 
 class QueueFactory {
@@ -33,10 +33,10 @@ class QueueFactory {
 
     /**
      * @param string $kitName
-     * @return Queue
+     * @return Queue|null
      */
-    public function getQueueByKitName(string $kitName): Queue {
-        return $this->queue[strtolower($kitName)];
+    public function getQueueByKitName(string $kitName): ?Queue {
+        return $this->queue[strtolower($kitName)] ?? null;
     }
 
     protected function handleQueue(): void {

@@ -22,7 +22,7 @@ class KitFactory {
         Server::getInstance()->getCommandMap()->register(KitCommand::class, new KitCommand());
 
         foreach ((new Config(Duels::getInstance()->getDataFolder() . 'kits.json'))->getAll() as $name => $data) {
-            $this->createKit(new Kit($name, $data));
+            $this->createKit(new Kit((string) $name, $data));
         }
     }
 

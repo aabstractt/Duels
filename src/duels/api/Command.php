@@ -40,7 +40,13 @@ class Command extends \pocketmine\command\Command {
             throw new InvalidCommandSyntaxException();
         }
 
-        $command = $this->getCommand(array_shift($args));
+        $name = array_shift($args);
+
+        if ($name == null) {
+            throw new InvalidCommandSyntaxException();
+        }
+
+        $command = $this->getCommand($name);
 
         if ($command == null) {
             throw new InvalidCommandSyntaxException();
