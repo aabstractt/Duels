@@ -114,4 +114,18 @@ class Duels extends PluginBase {
     public static function generateNewLevel(array $data): Level {
         return new Level($data);
     }
+
+    /**
+     * @return bool
+     */
+    public static function isLobbyItemsEnabled(): bool {
+        return self::$instance->getConfig()->get('lobby-items-enabled', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isSpectatorItemsEnabled(): bool {
+        return self::$instance->getConfig()->get('spectator-items-enabled', false);
+    }
 }

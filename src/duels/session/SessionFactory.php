@@ -16,7 +16,9 @@ class SessionFactory {
      * @param string $name
      */
     public function createSession(string $name): void {
-        $this->sessions[strtolower($name)] = new Session($name);
+        $session = $this->sessions[strtolower($name)] = new Session($name);
+
+        $session->setDefaultLobbyAttributes();
     }
 
     /**

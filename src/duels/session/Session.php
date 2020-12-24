@@ -6,6 +6,7 @@ namespace duels\session;
 
 use duels\arena\Arena;
 use duels\math\GameVector3;
+use duels\utils\ItemUtils;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -23,6 +24,8 @@ class Session {
     private $energized = false;
     /** @var int */
     private $queueWaitingTime = 0;
+    /** @var bool */
+    private $lobbyItemsEnabled = true;
 
     /**
      * Session constructor.
@@ -92,6 +95,26 @@ class Session {
     }
 
     /**
+     * @param int $queueWaitingTime
+     */
+    public function increaseQueueWaitingTime(int $queueWaitingTime = 0): void {
+        if ($queueWaitingTime == 1) {
+            $this->queueWaitingTime = 0;
+
+            return;
+        }
+
+        $this->queueWaitingTime++;
+    }
+
+    /**
+     * @param bool $lobbyItemsEnabled
+     */
+    public function setLobbyItemsEnabled(bool $lobbyItemsEnabled = false): void {
+        $this->lobbyItemsEnabled = $lobbyItemsEnabled;
+    }
+
+    /**
      * @param bool $value
      */
     public function setEnergized(bool $value = true): void {
@@ -110,19 +133,6 @@ class Session {
      */
     public function setImmobile(bool $value = true): void {
         $this->getGeneralPlayer()->setImmobile($value);
-    }
-
-    /**
-     * @param int $queueWaitingTime
-     */
-    public function increaseQueueWaitingTime(int $queueWaitingTime = 0): void {
-        if ($queueWaitingTime == 1) {
-            $this->queueWaitingTime = 0;
-
-            return;
-        }
-
-        $this->queueWaitingTime++;
     }
 
     /**
@@ -179,5 +189,29 @@ class Session {
      */
     public function sendTitle(string $title, string $subtitle = ''): void {
         $this->getGeneralPlayer()->addTitle(TextFormat::colorize($title), TextFormat::colorize($subtitle));
+    }
+
+    /**
+     * Give the default attributes in the lobby or when join a game
+     */
+    public function setDefaultLobbyAttributes(): void {
+        $instance = $this->getGeneralPlayer();
+
+        $instance->getInventory()->clearAll();
+        $instance->getArmorInventory()->clearAll();
+
+        $instance->setHealth($instance->getMaxHealth());
+        $instance->setFood($instance->getMaxFood());
+
+        $instance->removeAllEffects();
+
+        $instance->setAllowFlight(false);
+        $instance->setFlying(false);
+
+        $instance->setGamemode($instance::SURVIVAL);
+
+        if ($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() || !$this->lobbyItemsEnabled) return;
+
+        $instance->getInventory()->setContents(ItemUtils::getLobbyItems());
     }
 }
