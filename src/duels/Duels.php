@@ -74,11 +74,11 @@ class Duels extends PluginBase {
     public function onEnable(): void {
         self::$instance = $this;
 
+        self::$queueFactory = new QueueFactory();
+
         self::$kitFactory = new KitFactory();
 
         self::$levelFactory = new LevelFactory();
-
-        self::$queueFactory = new QueueFactory();
 
         self::$arenaFactory = new ArenaFactory();
 
