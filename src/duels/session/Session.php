@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\session;
 
 use duels\arena\Arena;
+use duels\Duels;
 use duels\math\GameVector3;
 use duels\utils\ItemUtils;
 use pocketmine\level\Level;
@@ -173,7 +174,7 @@ class Session {
 
         if ($arena == null) return false;
 
-        return $arena->inArenaAsSpectator($this->getName());
+        return $arena->inArenaAsSpectator($this);
     }
 
     /**
@@ -213,5 +214,24 @@ class Session {
         if ($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() || !$this->lobbyItemsEnabled) return;
 
         $instance->getInventory()->setContents(ItemUtils::getLobbyItems());
+    }
+
+    /**
+     * @param bool $teleport
+     */
+    public function remove(bool $teleport = false): void {
+        $arena = $this->arena;
+
+        if ($arena == null) return;
+
+        $arena->removeSessionOrSpectator($this);
+
+        if (!$teleport) {
+            $arena->addSpectator($this);
+
+            return;
+        }
+
+        $this->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
     }
 }

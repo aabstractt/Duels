@@ -7,7 +7,6 @@ namespace duels;
 use duels\arena\Arena;
 use duels\arena\Level;
 use duels\session\Session;
-use pocketmine\Player as pocketPlayer;
 use pocketmine\plugin\PluginException;
 use pocketmine\Server;
 
@@ -61,12 +60,12 @@ class ArenaFactory {
     }
 
     /**
-     * @param pocketPlayer $player
+     * @param Session $session
      * @return Arena|null
      */
-    public function getArena(pocketPlayer $player): ?Arena {
+    public function getArena(Session $session): ?Arena {
         foreach ($this->arenas as $arena) {
-            if (!$arena->inArenaAsPlayerOrSpectator($player->getName())) continue;
+            if (!$arena->inArenaAsPlayerOrSpectator($session)) continue;
 
             return $arena;
         }

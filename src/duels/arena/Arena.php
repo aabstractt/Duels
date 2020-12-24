@@ -162,12 +162,12 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
-     * @param string $name
+     * @param Session $session
      */
-    public function removeSession(string $name): void {
-        if (!$this->inArenaAsPlayer($name)) return;
+    public function removeSession(Session $session): void {
+        if (!$this->inArenaAsPlayer($session)) return;
 
-        unset($this->sessions[strtolower($name)]);
+        unset($this->sessions[strtolower($session->getName())]);
 
         if ($this->isStarted() || $this->isFinishing()) return;
 
@@ -192,11 +192,11 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
-     * @param string $name
+     * @param Session $session
      * @return bool
      */
-    public function inArenaAsPlayer(string $name): bool {
-        return $this->getSession($name) !== null;
+    public function inArenaAsPlayer(Session $session): bool {
+        return $this->getSession($session) !== null;
     }
 
     /**
@@ -207,12 +207,12 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
-     * @param string $name
+     * @param Session $session
      */
-    public function removeSpectator(string $name): void {
-        if (!$this->inArenaAsSpectator($name)) return;
+    public function removeSpectator(Session $session): void {
+        if (!$this->inArenaAsSpectator($session)) return;
 
-        unset($this->spectators[strtolower($name)]);
+        unset($this->spectators[strtolower($session->getName())]);
     }
 
     /**
@@ -231,21 +231,21 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
-     * @param string $name
+     * @param Session $session
      * @return bool
      */
-    public function inArenaAsSpectator(string $name): bool {
-        return $this->getSpectator($name) !== null;
+    public function inArenaAsSpectator(Session $session): bool {
+        return $this->getSpectator($session->getName()) !== null;
     }
 
     /**
-     * @param string $name
+     * @param Session $session
      */
-    public function removeSessionOrSpectator(string $name): void {
-        if ($this->inArenaAsPlayer($name)) {
-            $this->removeSession($name);
-        } else if ($this->inArenaAsSpectator($name)) {
-            $this->removeSpectator($name);
+    public function removeSessionOrSpectator(Session $session): void {
+        if ($this->inArenaAsPlayer($session)) {
+            $this->removeSession($session);
+        } else if ($this->inArenaAsSpectator($session)) {
+            $this->removeSpectator($session);
         }
     }
 
@@ -258,11 +258,11 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
-     * @param string $name
+     * @param Session $session
      * @return bool
      */
-    public function inArenaAsPlayerOrSpectator(string $name): bool {
-        return $this->inArenaAsPlayer($name) || $this->inArenaAsSpectator($name);
+    public function inArenaAsPlayerOrSpectator(Session $session): bool {
+        return $this->inArenaAsPlayer($session) || $this->inArenaAsSpectator($session);
     }
 
     /**

@@ -12,7 +12,10 @@ use duels\listener\PlayerListener;
 use duels\queue\QueueFactory;
 use duels\session\SessionFactory;
 use pocketmine\event\Listener;
+use pocketmine\level\Level as pocketLevel;
 use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\PluginException;
+use pocketmine\Server;
 
 class Duels extends PluginBase {
 
@@ -113,6 +116,19 @@ class Duels extends PluginBase {
      */
     public static function generateNewLevel(array $data): Level {
         return new Level($data);
+    }
+
+    /**
+     * @return pocketLevel
+     */
+    public static function getDefaultLevelNonNull(): pocketLevel {
+        $level = Server::getInstance()->getDefaultLevel();
+
+        if ($level == null) {
+            throw new PluginException('Default world is null');
+        }
+
+        return $level;
     }
 
     /**
