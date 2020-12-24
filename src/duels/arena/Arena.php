@@ -87,10 +87,17 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
+     * @return pocketLevel|null
+     */
+    public function getWorld(): ?pocketLevel {
+        return Server::getInstance()->getLevelByName($this->getWorldName());
+    }
+
+    /**
      * @return pocketLevel
      */
-    public function getWorld(): pocketLevel {
-        $level = Server::getInstance()->getLevelByName($this->getWorldName());
+    public function getWorldNonNull(): pocketLevel {
+        $level = $this->getWorld();
 
         if ($level == null) {
             throw new PluginException('World not found');
@@ -224,7 +231,7 @@ class Arena extends TaskHandlerStorage {
 
             $session->setSlot($slot++);
 
-            $session->teleport($this->level->getSlotPosition($session->getSlot(), $this->getWorld()));
+            $session->teleport($this->level->getSlotPosition($session->getSlot(), $this->getWorldNonNull()));
 
             $this->level->getKit()->giveKit($session);
         }

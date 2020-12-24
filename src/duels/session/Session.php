@@ -172,9 +172,7 @@ class Session {
 
         if ($arena == null) return false;
 
-        if ($level == null) $level = $arena->getWorld();
-
-        if ($level == null) return false;
+        if ($level == null) $level = $arena->getWorldNonNull();
 
         return $level->getFolderName() == $arena->getWorldName() || $level->getFolderName() == 'Match-' . $arena->getId();
     }
