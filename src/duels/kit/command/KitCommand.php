@@ -13,7 +13,7 @@ class KitCommand extends Command {
      * KitCommand constructor.
      */
     public function __construct() {
-        parent::__construct('kit', 'Kit Command');
+        parent::__construct('kit', 'Kit Command', '/kit help');
 
         $this->addCommand(new CreateCommand('create', 'kit.command.create'));
     }

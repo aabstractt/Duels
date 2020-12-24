@@ -22,22 +22,24 @@ class LobbyItemsCommand extends SubCommand {
         /** @var Player $target */
         $target = null;
 
-        if (empty($args[1]) && $sender instanceof Player) {
-            $target = $sender;
-        }
+        if ((isset($args[0]) && isset($args[1])) && (($permission = $this->getPermission()) !== null && $sender->hasPermission($permission))) {
+            if ($args[1] != 'enable' && $args[1] == 'disable') {
+                $sender->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <player> <enable|disable>');
 
-        if(!(empty($args[1]) && ($args[0] == 'enable' || $args[0] == 'disable')) || isset($args[1])) {
-            $sender->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <player|empty> <enable|disable>');
+                return;
+            }
 
-            return;
-        }
-
-        $permission = $this->getPermission();
-
-        if ($permission == null) return;
-
-        if (isset($args[0]) && $sender->hasPermission($permission)) {
             $target = Server::getInstance()->getPlayer($args[0]);
+        }
+
+        if ((isset($args[0]) && empty($args[1])) && $sender instanceof Player) {
+            if ($args[1] != 'enable' && $args[1] == 'disable') {
+                $sender->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <player> <enable|disable>');
+
+                return;
+            }
+
+            $target = $sender;
         }
 
         if ($target == null) {

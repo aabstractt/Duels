@@ -84,6 +84,10 @@ class Queue {
         $timeWaiting = 0;
 
         foreach ($this->sessions as $session) {
+            $session->increaseQueueWaitingTime();
+
+            if (count($this->sessions) < 2) continue;
+
             if (count($sessionsAvailable) == 2) continue;
 
             if (isset($sessionsAvailable[strtolower($session->getName())])) continue;
@@ -95,7 +99,11 @@ class Queue {
             $sessionsAvailable[strtolower($session->getName())] = $session;
 
             $session->increaseQueueWaitingTime(1);
+
+            $this->removeSession($session);
         }
+
+        if (count($sessionsAvailable) < 2) return;
 
         Duels::getArenaFactory()->createArena($sessionsAvailable);
     }

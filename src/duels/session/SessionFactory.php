@@ -5,12 +5,24 @@ declare(strict_types=1);
 namespace duels\session;
 
 use duels\Duels;
+use duels\listener\EntityListener;
+use duels\listener\PlayerListener;
 use pocketmine\Player;
 
 class SessionFactory {
 
     /** @var array<string, Session> */
     private $sessions = [];
+
+    /**
+     * SessionFactory constructor.
+     */
+    public function __construct() {
+        Duels::getInstance()->registerListeners(
+            new PlayerListener(),
+            new EntityListener()
+        );
+    }
 
     /**
      * @param string $name
@@ -44,6 +56,8 @@ class SessionFactory {
         if ($session == null) return;
 
         Duels::getQueueFactory()->removeSessionFromQueue($session);
+
+        $session->remove(true);
 
         unset($this->sessions[strtolower($player->getName())]);
     }

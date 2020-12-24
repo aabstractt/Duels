@@ -1,0 +1,31 @@
+# MySQL connection
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  dbname: "sumo"
+  username: "root"
+  password: ""
+
+# Lobby options
+lobby-items-enabled: false
+# Items
+lobby-items:
+  leave:
+    id: 355
+    meta: 14
+    count: 1
+    name: "&r&c&lJoin to queue"
+    command: "queue join"
+    slot: 8
+
+# Spectator options
+spectator-items-enabled: false
+# Items
+spectator-items:
+  leave:
+    id: 355
+    meta: 14
+    count: 1
+    name: "&r&c&lLeave"
+    command: "leave"
+    slot: 8

@@ -15,7 +15,7 @@ class ConfigCommand extends Command {
      * ConfigCommand constructor.
      */
     public function __construct() {
-        parent::__construct('config', 'Config a duel arena');
+        parent::__construct('config', 'Config a duel arena', '/config help');
 
         $this->addCommand(
             new CreateCommand('create', 'config.command.create'),

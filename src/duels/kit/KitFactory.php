@@ -8,6 +8,7 @@ use duels\Duels;
 use duels\kit\command\KitCommand;
 use pocketmine\Server;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 
 class KitFactory {
 
@@ -23,6 +24,8 @@ class KitFactory {
         foreach ((new Config(Duels::getInstance()->getDataFolder() . 'kits.json'))->getAll() as $name => $data) {
             $this->createKit(new Kit((string) $name, $data));
         }
+
+        Server::getInstance()->getLogger()->info(TextFormat::AQUA . 'Duels: ' . count($this->kits) . ' kit(s) loaded.');
     }
 
     /**

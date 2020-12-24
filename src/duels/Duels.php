@@ -8,7 +8,6 @@ use duels\arena\Arena;
 use duels\arena\Level;
 use duels\command\ConfigCommand;
 use duels\kit\KitFactory;
-use duels\listener\PlayerListener;
 use duels\queue\QueueFactory;
 use duels\session\SessionFactory;
 use pocketmine\event\Listener;
@@ -75,6 +74,11 @@ class Duels extends PluginBase {
     }
 
     public function onEnable(): void {
+        if (!is_dir($this->getDataFolder())) @mkdir($this->getDataFolder());
+        if (!is_dir($this->getDataFolder() . 'arenas/')) @mkdir($this->getDataFolder() . 'arenas/');
+
+        $this->saveConfig();
+
         self::$instance = $this;
 
         self::$queueFactory = new QueueFactory();
@@ -83,11 +87,13 @@ class Duels extends PluginBase {
 
         self::$levelFactory = new LevelFactory();
 
+        if (file_exists($this->getDataFolder() . 'levels.json')) {
+            self::$levelFactory->init();
+        }
+
         self::$arenaFactory = new ArenaFactory();
 
         self::$sessionFactory = new SessionFactory();
-
-        $this->registerListeners(new PlayerListener());
 
         $this->getServer()->getCommandMap()->register(ConfigCommand::class, new ConfigCommand());
     }

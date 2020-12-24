@@ -162,6 +162,13 @@ class Session {
     /**
      * @return bool
      */
+    public function inArena(): bool {
+        return $this->arena != null;
+    }
+
+    /**
+     * @return bool
+     */
     public function isConnected(): bool {
         return Server::getInstance()->getPlayerExact($this->getName()) !== null;
     }

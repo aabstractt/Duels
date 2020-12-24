@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace duels;
 
 use duels\arena\Level;
+use pocketmine\Server;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 
 class LevelFactory {
-
 
     /** @var Level[] */
     private $levels = [];
@@ -17,6 +18,8 @@ class LevelFactory {
         foreach ((new Config(Duels::getInstance()->getDataFolder() . 'levels.json', Config::JSON))->getAll() as $data) {
             $this->loadLevel($data);
         }
+
+        Server::getInstance()->getLogger()->info(TextFormat::AQUA . 'Duels: ' . count($this->levels) . ' map(s) loaded.');
     }
 
     /**
