@@ -52,7 +52,7 @@ class Command extends \pocketmine\command\Command {
             throw new InvalidCommandSyntaxException();
         }
 
-        if ($command->getPermission() != null && !$sender->hasPermission($command->getPermission())) {
+        if (($permission = $command->getPermission()) != null && !$sender->hasPermission($permission)) {
             $sender->sendMessage(TextFormat::RED . 'You don\'t have permissions to use this command');
 
             return;
