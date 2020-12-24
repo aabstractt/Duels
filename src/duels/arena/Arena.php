@@ -25,7 +25,7 @@ class Arena extends TaskHandlerStorage {
     /** @var string */
     protected $worldName;
     /** @var array<string, Session> */
-    protected $players = [];
+    protected $sessions = [];
     /** @var array<string, Session> */
     protected $spectators = [];
     /** @var int */
@@ -148,27 +148,28 @@ class Arena extends TaskHandlerStorage {
     /**
      * @param Session $session
      */
-    public function addPlayer(Session $session): void {
-        $this->players[strtolower($session->getName())] = $session;
+    public function addSession(Session $session): void {
+        $this->sessions[strtolower($session->getName())] = $session;
+    }
 
-        /*if (Game::getInstance()->hasWaitingLobby()) {
-            $player->teleport($this->getWaitingLobby());
-        }*/
-
-        $this->broadcastMessage('&7' . $session->getName() . '&a has joined the game! &7(&6' . count($this->players) . '&7/&6' . $this->level->getMaxSlots() . '&7)');
+    /**
+     * @param array<string, Session> $sessions
+     */
+    public function addSessions(array $sessions): void {
+        foreach ($sessions as $session) {
+            $this->addSession($session);
+        }
     }
 
     /**
      * @param string $name
      */
-    public function removePlayer(string $name): void {
+    public function removeSession(string $name): void {
         if (!$this->inArenaAsPlayer($name)) return;
 
-        unset($this->players[strtolower($name)]);
+        unset($this->sessions[strtolower($name)]);
 
         if ($this->isStarted() || $this->isFinishing()) return;
-
-        $this->broadcastMessage('&7' . $name . '&a has left the game! &7(&6' . count($this->players) . '&7/&6' . $this->level->getMaxSlots() . '&7)');
 
         if (count($this->getAllPlayers()) !== 0) return;
 
@@ -179,15 +180,15 @@ class Arena extends TaskHandlerStorage {
      * @param string $name
      * @return Session|null
      */
-    public function getPlayer(string $name): ?Session {
-        return $this->players[strtolower($name)] ?? null;
+    public function getSession(string $name): ?Session {
+        return $this->sessions[strtolower($name)] ?? null;
     }
 
     /**
      * @return array<string, Session>
      */
-    public function getPlayers(): array {
-        return $this->players;
+    public function getSessions(): array {
+        return $this->sessions;
     }
 
     /**
@@ -195,7 +196,7 @@ class Arena extends TaskHandlerStorage {
      * @return bool
      */
     public function inArenaAsPlayer(string $name): bool {
-        return $this->getPlayer($name) !== null;
+        return $this->getSession($name) !== null;
     }
 
     /**
@@ -203,8 +204,6 @@ class Arena extends TaskHandlerStorage {
      */
     public function addSpectator(Session $session): void {
         $this->spectators[strtolower($session->getName())] = $session;
-
-        //$player->setDefaultPlayerAttributes();
     }
 
     /**
@@ -242,9 +241,9 @@ class Arena extends TaskHandlerStorage {
     /**
      * @param string $name
      */
-    public function removePlayerOrSpectator(string $name): void {
+    public function removeSessionOrSpectator(string $name): void {
         if ($this->inArenaAsPlayer($name)) {
-            $this->removePlayer($name);
+            $this->removeSession($name);
         } else if ($this->inArenaAsSpectator($name)) {
             $this->removeSpectator($name);
         }
@@ -254,8 +253,8 @@ class Arena extends TaskHandlerStorage {
      * @param string $name
      * @return Session|null
      */
-    public function getPlayerOrSpectator(string $name): ?Session {
-        return $this->getPlayer($name) ?? $this->getSpectator($name);
+    public function getSessionOrSpectator(string $name): ?Session {
+        return $this->getSession($name) ?? $this->getSpectator($name);
     }
 
     /**
@@ -270,7 +269,7 @@ class Arena extends TaskHandlerStorage {
      * @return Session[]
      */
     public function getAllPlayers(): array {
-        return array_merge($this->players, $this->getSpectators());
+        return array_merge($this->sessions, $this->getSpectators());
     }
 
     /**
