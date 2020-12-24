@@ -25,9 +25,9 @@ class QueueFactory {
 
     /**
      * @param Kit $kit
-     * @return Queue
+     * @return Queue|null
      */
-    public function getQueueByKit(Kit $kit): Queue {
+    public function getQueueByKit(Kit $kit): ?Queue {
         return $this->getQueueByKitName($kit->getName());
     }
 
