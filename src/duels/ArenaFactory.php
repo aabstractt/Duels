@@ -21,9 +21,9 @@ class ArenaFactory {
     /**
      * @param array<string, Session> $players
      * @param Level|null $level
-     * @return Arena|null
+     * @return void
      */
-    public function createArena(array $players, Level $level = null): ?Arena {
+    public function createArena(array $players, Level $level = null): void {
         if ($level === null) {
             $level = Duels::getLevelFactory()->getRandomLevel();
         }
@@ -35,12 +35,14 @@ class ArenaFactory {
 
             $arena = Duels::getInstance()->generateNewArena($this->gamesPlayed++, $level);
 
-            return $this->arenas[$arena->getId()] = $arena;
+            $this->arenas[$arena->getId()] = $arena;
+
+            foreach ($players as $player) {
+                $arena->addPlayer($player);
+            }
         } catch (PluginException $e) {
             Server::getInstance()->getLogger()->logException($e);
         }
-
-        return null;
     }
 
     /**

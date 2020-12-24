@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace duels\arena;
+namespace duels\queue;
 
 use duels\Duels;
 use duels\kit\Kit;

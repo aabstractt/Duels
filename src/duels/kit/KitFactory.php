@@ -72,9 +72,17 @@ class KitFactory {
         $kit = $this->getKit($kitName);
 
         if ($kit == null) {
-            throw new PluginException('Kit not found');
+            throw new KitException('Kit not found');
         }
 
         return $kit;
+    }
+
+    /**
+     * @param string $kitName
+     * @return bool
+     */
+    public function isKit(string $kitName): bool {
+        return isset($this->kits[strtolower($kitName)]);
     }
 }

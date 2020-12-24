@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace duels;
+namespace duels\queue;
 
-use duels\arena\Queue;
+use duels\Duels;
 use duels\kit\Kit;
 use pocketmine\scheduler\ClosureTask;
 

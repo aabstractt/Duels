@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace duels\arena;
 
 use duels\Duels;
+use duels\kit\Kit;
+use duels\kit\KitException;
 use duels\math\GameLocation;
 use duels\math\GamePosition;
 use duels\math\GameVector3;
@@ -21,6 +23,10 @@ class Level {
      */
     public function __construct(array $data) {
         $this->data = $data;
+
+        if (!Duels::getKitFactory()->isKit($this->getKitName())) {
+            throw new KitException('Kit not found');
+        }
     }
 
     /**
@@ -70,6 +76,20 @@ class Level {
         $pos = GameLocation::fromArray($data, $level);
 
         return $pos;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKitName(): string {
+        return $this->data['kitName'];
+    }
+
+    /**
+     * @return Kit
+     */
+    public function getKit(): Kit {
+        return Duels::getKitFactory()->getKitNonNull($this->getKitName());
     }
 
     /**
