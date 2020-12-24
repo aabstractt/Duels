@@ -37,7 +37,7 @@ class SpawnCommand extends PlayerSubCommand {
             return;
         }
 
-        if (!is_numeric(($slot = (int)$args[1])) || $slot < 1 || $slot > $level->getMaxSlots()) {
+        if (!is_numeric(($slot = (int)$args[0])) || $slot < 1 || $slot > $level->getMaxSlots()) {
             $session->sendMessage(TextFormat::RED . 'You must specify a slot between 1-' . $level->getMaxSlots() . '.');
 
             return;

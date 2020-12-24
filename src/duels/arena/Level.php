@@ -82,7 +82,7 @@ class Level {
      * @return string
      */
     public function getKitName(): string {
-        return $this->data['kitName'];
+        return $this->data['kit'];
     }
 
     /**

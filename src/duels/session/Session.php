@@ -27,6 +27,8 @@ class Session {
     private $queueWaitingTime = 0;
     /** @var bool */
     private $lobbyItemsEnabled = true;
+    /** @var string|null */
+    private $opponentName = null;
 
     /**
      * Session constructor.
@@ -64,6 +66,20 @@ class Session {
     }
 
     /**
+     * @return string
+     */
+    public function getOpponentName(): string {
+        return $this->opponentName ?? 'null';
+    }
+
+    /**
+     * @return Session|null
+     */
+    public function getOpponentPlayer(): ?Session {
+        return Duels::getSessionFactory()->getSessionPlayerNullable($this->getOpponentName());
+    }
+
+    /**
      * @return Level
      */
     public function getLevelNonNull(): Level {
@@ -82,6 +98,8 @@ class Session {
      */
     public function setArena(Arena $arena = null): void {
         $this->arena = $arena;
+
+        if ($arena == null) $this->opponentName = null;
     }
 
     /**
@@ -199,6 +217,18 @@ class Session {
         $this->getGeneralPlayer()->addTitle(TextFormat::colorize($title), TextFormat::colorize($subtitle));
     }
 
+    public function loadOpponent(): void {
+        $arena = $this->arena;
+
+        if ($arena == null) return;
+
+        foreach ($arena->getSessions() as $session) {
+            if (strtolower($session->getName()) == strtolower($this->getName())) continue;
+
+            $this->opponentName = $session->getName();
+        }
+    }
+
     /**
      * Give the default attributes in the lobby or when join a game
      */
@@ -223,6 +253,14 @@ class Session {
         $instance->getInventory()->setContents(ItemUtils::getLobbyItems());
     }
 
+    public function setResetPlayerAttributes(): void {
+        $this->setDefaultLobbyAttributes();
+    }
+
+    public function handleWin(): void {
+
+    }
+
     /**
      * @param bool $teleport
      */
@@ -238,6 +276,8 @@ class Session {
 
             return;
         }
+
+        $this->setArena();
 
         $this->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
     }

@@ -17,7 +17,7 @@ class JoinCommand extends PlayerSubCommand {
      */
     public function onRun(Session $session, array $args): void {
         if (empty($args[0])) {
-            $session->sendMessage(TextFormat::RED . 'Usage: /queue' . $this->getName() . ' <kit>');
+            $session->sendMessage(TextFormat::RED . 'Usage: /queue ' . $this->getName() . ' <kit>');
 
             return;
         }

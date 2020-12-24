@@ -38,6 +38,12 @@ class CreateCommand extends PlayerSubCommand {
             return;
         }
 
+        if (!Duels::getKitFactory()->isKit($args[0])) {
+            $session->sendMessage(TextFormat::RED . 'Kit not found');
+
+            return;
+        }
+
         $level->save(true);
 
         $data = [

@@ -2,12 +2,15 @@
 
 namespace duels\arena;
 
+use duels\arena\task\GameCountDownUpdateTask;
+use duels\arena\task\GameMatchUpdateTask;
 use duels\asyncio\FileCopyAsyncTask;
 use duels\Duels;
 use duels\session\Session;
 use duels\task\TaskHandlerStorage;
 use duels\utils\BossBar;
 use duels\utils\Scoreboard;
+use duels\arena\task\GameFinishUpdateTask;
 use pocketmine\level\Level as pocketLevel;
 use pocketmine\plugin\PluginException;
 use pocketmine\Server;
@@ -73,7 +76,7 @@ class Arena extends TaskHandlerStorage {
     }
 
     public function bootGame(): void {
-
+        $this->scheduleRepeatingTask(new GameCountDownUpdateTask('game_count_down_update', $this));
     }
 
     /**
@@ -134,6 +137,13 @@ class Arena extends TaskHandlerStorage {
     /**
      * @return bool
      */
+    public function isWaiting(): bool {
+        return $this->status == self::STATUS_WAITING;
+    }
+
+    /**
+     * @return bool
+     */
     public function isStarted(): bool {
         return $this->status == self::STATUS_IN_GAME;
     }
@@ -146,18 +156,71 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
+     */
+    public function start(): void {
+        $this->setStatus(self::STATUS_IN_GAME);
+
+        $this->broadcastMessage('&aThe match has started, good luck!');
+
+        $this->scheduleRepeatingTask(new GameMatchUpdateTask('game_match_update', $this));
+    }
+
+    /**
+     * @param Session[] $winners
+     */
+    public function finish(array $winners = []): void {
+        $this->setStatus(self::STATUS_FINISHING);
+
+        foreach ($winners as $winner) $winner->handleWin();
+
+        foreach ($this->getAllPlayers() as $player) $player->setResetPlayerAttributes();
+
+        $this->scheduleRepeatingTask(new GameFinishUpdateTask('game_finish_update', $this));
+    }
+
+    /**
      * @param Session $session
      */
     public function addSession(Session $session): void {
         $this->sessions[strtolower($session->getName())] = $session;
+
+        $session->setArena($this);
+
+        $this->getScoreboard()->addPlayer($session);
     }
 
     /**
      * @param array<string, Session> $sessions
      */
     public function addSessions(array $sessions): void {
+        $this->scoreboard->removePlayer();
+
+        $this->scoreboard->addPlayer();
+
         foreach ($sessions as $session) {
             $this->addSession($session);
+
+            $session->loadOpponent();
+
+            $session->setEnergized();
+
+            $this->scoreboard->setLines([
+                11 => '&7' . date('d/m/y') . ' &8Match-' . $this->getId(),
+                10 => '',
+                9 => '&fStarting: &d0',
+                8 => '',
+                7 => '&fOpponent:',
+                6 => '&d' . $session->getOpponentName(),
+                5 => '',
+                4 => '&fMap: &d' . $this->level->getFolderName(),
+                3 => '&fKit: &d' . $this->level->getKit()->getName(),
+                2 => '',
+                1 => '&dip'
+            ], $session);
+
+            $session->setDefaultLobbyAttributes();
+
+            $this->level->getKit()->giveKit($session);
         }
     }
 

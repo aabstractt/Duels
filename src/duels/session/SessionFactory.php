@@ -48,6 +48,14 @@ class SessionFactory {
     }
 
     /**
+     * @param string $name
+     * @return Session|null
+     */
+    public function getSessionPlayerNullable(string $name): ?Session {
+        return $this->sessions[strtolower($name)] ?? null;
+    }
+
+    /**
      * @param Player $player
      */
     public function removeSession(Player $player): void {

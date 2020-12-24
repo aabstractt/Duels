@@ -54,12 +54,12 @@ class Scoreboard {
     }
 
     /**
-     * @param Session|null $player
+     * @param Session|null $session
      */
-    public function removePlayer(Session $player = null): void {
+    public function removePlayer(Session $session = null): void {
         $players = [];
 
-        if ($player !== null) $players = [$player];
+        if ($session !== null) $players = [$session];
 
         $pk = new RemoveObjectivePacket();
 
@@ -71,12 +71,12 @@ class Scoreboard {
     }
 
     /**
-     * @param Session|null $player
+     * @param Session|null $session
      */
-    public function addPlayer(Session $player = null): void {
+    public function addPlayer(Session $session = null): void {
         $players = $this->arena->getAllPlayers();
 
-        if ($player !== null) $players = [$player];
+        if ($session !== null) $players = [$session];
 
         $pk = new SetDisplayObjectivePacket();
 
@@ -98,20 +98,20 @@ class Scoreboard {
     /**
      * @param int $line
      * @param string $message
-     * @param Session|null $player
+     * @param Session|null $session
      */
-    public function setLine(int $line, string $message = '', Session $player = null): void {
-        $this->setLines([$line => $message], $player);
+    public function setLine(int $line, string $message = '', Session $session = null): void {
+        $this->setLines([$line => $message], $session);
     }
 
     /**
      * @param array $lines
-     * @param Session|null $player
+     * @param Session|null $session
      */
-    public function setLines(array $lines, ?Session $player = null): void {
+    public function setLines(array $lines, ?Session $session = null): void {
         $players = $this->arena->getAllPlayers();
 
-        if ($player !== null) $players = [$player];
+        if ($session !== null) $players = [$session];
 
         foreach ($players as $p) {
             $instance = $p->getGeneralPlayer();

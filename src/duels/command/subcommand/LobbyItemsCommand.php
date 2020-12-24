@@ -33,8 +33,8 @@ class LobbyItemsCommand extends SubCommand {
         }
 
         if ((isset($args[0]) && empty($args[1])) && $sender instanceof Player) {
-            if ($args[1] != 'enable' && $args[1] == 'disable') {
-                $sender->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <player> <enable|disable>');
+            if ($args[0] != 'enable' && $args[0] == 'disable') {
+                $sender->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <enable|disable>');
 
                 return;
             }
