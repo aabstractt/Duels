@@ -4,6 +4,7 @@ namespace duels\kit;
 
 use duels\Duels;
 use duels\session\Session;
+use duels\utils\ItemUtils;
 
 class Kit {
 
@@ -41,7 +42,26 @@ class Kit {
         Duels::getKitFactory()->createKit($this);
     }
 
+    /**
+     * @param Session $session
+     */
     public function giveKit(Session $session): void {
+        $instance = $session->getGeneralPlayer();
 
+        $armor = $this->data['armor'] ?? [];
+
+        $instance->getArmorInventory()->clearAll();
+
+        foreach ($armor as $slot => $content) {
+            $instance->getArmorInventory()->setItem($slot, ItemUtils::stringToItem($content));
+        }
+
+        $inventory = $this->data['inventory'] ?? [];
+
+        $instance->getInventory()->clearAll();
+
+        foreach ($inventory as $slot => $content) {
+            $instance->getInventory()->setItem($slot, ItemUtils::stringToItem($content));
+        }
     }
 }
