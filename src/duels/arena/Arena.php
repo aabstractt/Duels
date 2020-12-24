@@ -196,7 +196,7 @@ class Arena extends TaskHandlerStorage {
      * @return bool
      */
     public function inArenaAsPlayer(Session $session): bool {
-        return $this->getSession($session) !== null;
+        return $this->getSession($session->getName()) !== null;
     }
 
     /**
