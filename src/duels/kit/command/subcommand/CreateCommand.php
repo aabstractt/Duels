@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\kit\command\subcommand;
 
 use duels\api\PlayerSubCommand;
+use duels\Duels;
 use duels\kit\Kit;
 use duels\session\Session;
 use duels\utils\ItemUtils;
@@ -17,11 +18,13 @@ class CreateCommand extends PlayerSubCommand {
      * @param array $args
      */
     public function onRun(Session $session, array $args): void {
-        if (empty($args)) {
-            $session->sendMessage(TextFormat::RED . 'Usage: /kit ' . $this->getName() . ' <name>');
+        if (!isset($args[0], $args[1])) {
+            $session->sendMessage(TextFormat::RED . 'Usage: /kit ' . $this->getName() . ' <name> <placeholder>');
 
             return;
         }
+
+        $name = array_shift($args[0]);
 
         $data = [];
 
@@ -35,7 +38,9 @@ class CreateCommand extends PlayerSubCommand {
             $data['inventory'][$slot] = ItemUtils::itemToString($content);
         }
 
-        (new Kit($args[0], $data))->handleUpdate();
+        (new Kit($name, $data))->handleUpdate();
+
+        Duels::getInstance()->addPlaceHolder($name, implode(' ', $args));
 
         $session->sendMessage(TextFormat::GREEN . sprintf('Kit %s created', $args[0]));
     }

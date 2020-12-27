@@ -9,6 +9,7 @@ use duels\arena\Level;
 use duels\asyncio\FileDeleteAsyncTask;
 use duels\command\ConfigCommand;
 use duels\kit\KitFactory;
+use duels\queue\Queue;
 use duels\queue\QueueFactory;
 use duels\session\SessionFactory;
 use pocketmine\event\Listener;
@@ -147,6 +148,26 @@ class Duels extends PluginBase {
         }
 
         return $level;
+    }
+
+    /**
+     * @param string $kitName
+     * @param string $placeholder
+     */
+    public function addPlaceHolder(string $kitName, string $placeholder): void {
+        $config = $this->getConfig();
+
+        $config->set('placeHolders', array_merge($config->get('placeHolders'), [$kitName => $placeholder]));
+
+        $config->save();
+    }
+
+    /**
+     * @param Queue $queue
+     * @return string
+     */
+    public static function translatePlaceHolder(Queue $queue): string {
+        return '';
     }
 
     /**

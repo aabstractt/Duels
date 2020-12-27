@@ -27,9 +27,7 @@ class ListCommand extends PlayerSubCommand {
             'buttons' => []
         ];
 
-        foreach ($queues as $queue) {
-            $data['buttons'][] = ['text' => $queue->getKit()->getName()];
-        }
+        foreach ($queues as $queue) $data['buttons'][] = ['text' => Duels::translatePlaceHolder($queue)];
 
         $session->sendForm(function (Session $session, ?int $data): void {
 

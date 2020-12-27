@@ -6,6 +6,10 @@ mysql:
   username: "root"
   password: ""
 
+# Button text of the kits
+placeHolders:
+  SG: "&bSG\n&8{0} Queue | {1} Playing"
+
 # Lobby options
 lobby-items-enabled: false
 # Items
