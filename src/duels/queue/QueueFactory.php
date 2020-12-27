@@ -36,6 +36,13 @@ class QueueFactory {
     }
 
     /**
+     * @return Queue[]
+     */
+    public function getQueues(): array {
+        return $this->queue;
+    }
+
+    /**
      * @param Kit $kit
      * @return Queue
      */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace duels\session;
 
+use duels\api\Form;
 use duels\arena\Arena;
 use duels\Duels;
 use duels\math\GameVector3;
@@ -215,6 +216,14 @@ class Session {
      */
     public function sendTitle(string $title, string $subtitle = ''): void {
         $this->getGeneralPlayer()->addTitle(TextFormat::colorize($title), TextFormat::colorize($subtitle));
+    }
+
+    /**
+     * @param callable $callback
+     * @param array $data
+     */
+    public function sendForm(callable $callback, array $data): void {
+        $this->getGeneralPlayer()->sendForm(new Form($callback, $data));
     }
 
     public function loadOpponent(): void {
