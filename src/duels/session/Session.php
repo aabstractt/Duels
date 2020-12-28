@@ -338,6 +338,13 @@ class Session {
     }
 
     /**
+     * @return TargetOffline
+     */
+    public function getTargetOffline(): TargetOffline {
+        return $this->targetOffline;
+    }
+
+    /**
      * Give the default attributes in the lobby or when join a game
      */
     public function setDefaultLobbyAttributes(): void {
@@ -401,8 +408,6 @@ class Session {
 
         if (!$teleport) {
             $arena->addSpectator($this);
-
-            $this->targetOffline->increaseLosses();
 
             return;
         }

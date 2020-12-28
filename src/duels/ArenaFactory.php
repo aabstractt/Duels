@@ -132,6 +132,8 @@ class ArenaFactory {
             $pos = $killerSession->getGeneralPlayer()->asPosition();
         }
 
+        $session->getTargetOffline()->increaseLosses();
+
         $session->setResetPlayerAttributes();
 
         $session->teleport($pos);
