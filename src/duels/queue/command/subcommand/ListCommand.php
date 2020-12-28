@@ -17,7 +17,13 @@ class ListCommand extends PlayerSubCommand {
      * @param array $args
      */
     public function onRun(Session $session, array $args): void {
-        $queues = array_values(Duels::getQueueFactory()->getQueues());
+        if (empty($args[0])) {
+            $session->sendMessage(TextFormat::RED . '/queue ' . $this->getName() . ' <ranked/unranked>');
+
+            return;
+        }
+
+        $queues = $args[0] == 'ranked' ? Duels::getQueueFactory()->getQueuesRanked() : Duels::getQueueFactory()->getQueuesUnranked();
 
         if (empty($queues)) return;
 
@@ -31,11 +37,11 @@ class ListCommand extends PlayerSubCommand {
         foreach ($queues as $queue) $data['buttons'][] = ['text' => Duels::translatePlaceHolder($queue)];
 
         $session->sendForm(function (Session $session, ?int $data) use($queues) : void {
-            $queue = $queues[$data] ?? null;
+            $queue = array_values($queues)[$data] ?? null;
 
             if ($queue == null) return;
 
-            Server::getInstance()->dispatchCommand($session->getGeneralPlayer(), 'queue join ' . $queue->getKit()->getName());
+            Server::getInstance()->dispatchCommand($session->getGeneralPlayer(), 'queue join ' . $queue->getKit()->getName() . ' ' . ($queue->isPremium() ? 'ranked' : 'unranked'));
         }, $data);
     }
 }

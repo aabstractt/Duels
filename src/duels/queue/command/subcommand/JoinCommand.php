@@ -17,7 +17,13 @@ class JoinCommand extends PlayerSubCommand {
      */
     public function onRun(Session $session, array $args): void {
         if (!isset($args[0], $args[1])) {
-            $session->sendMessage(TextFormat::RED . 'Usage: /queue ' . $this->getName() . ' <kit> <premium> (true/false)');
+            $session->sendMessage(TextFormat::RED . 'Usage: /queue ' . $this->getName() . ' <kit> <ranked/unranked>');
+
+            return;
+        }
+
+        if ($args[1] != 'ranked' && $args[1] != 'unranked') {
+            $session->sendMessage(TextFormat::RED . 'Usage: /queue ' . $this->getName() . ' <kit> <ranked/unranked>');
 
             return;
         }
@@ -30,7 +36,7 @@ class JoinCommand extends PlayerSubCommand {
             return;
         }
 
-        $queue = Duels::getQueueFactory()->getQueueByKit($kit, $args[1] == 'true');
+        $queue = Duels::getQueueFactory()->getQueueByKit($kit, $args[1] == 'ranked');
 
         if ($queue->isPremium()) {
             if (!$session->getGeneralPlayer()->hasPermission($this->getPermission() . '.premium')) {

@@ -57,8 +57,15 @@ class QueueFactory {
     /**
      * @return Queue[]
      */
-    public function getQueues(): array {
-        return array_merge($this->queueUnranked, $this->queueRanked);
+    public function getQueuesUnranked(): array {
+        return $this->queueUnranked;
+    }
+
+    /**
+     * @return Queue[]
+     */
+    public function getQueuesRanked(): array {
+        return $this->queueRanked;
     }
 
     /**
