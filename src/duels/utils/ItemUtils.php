@@ -11,6 +11,8 @@ use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\IntTag;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\plugin\PluginException;
 use pocketmine\utils\TextFormat;
@@ -109,36 +111,14 @@ class ItemUtils {
             $item = Item::get($value['id'], ($value['meta'] ?? 0), $value['count']);
 
             $item->setCustomName(TextFormat::colorize($value['name']));
-            $item->setCustomBlockData(new CompoundTag("", [new StringTag('Name', $name), new StringTag('Command', $value['command'] ?? '')]));
 
-            $items[$value['slot']] = $item;
-        }
+            $tag = new ListTag('Commands');
 
-        return $items;
-    }
+            foreach ($value['commands'] as $command) {
+                $tag->push(new StringTag('', $command['name'] . ':' . $command['console']));
+            }
 
-    /**
-     * @return Item[]
-     */
-    public static function getSpectatorItems(): array {
-        $data = Duels::getInstance()->getConfig()->get('spectator-items', []);
-
-        if (empty($data)) {
-            return [];
-        }
-
-        if (!Duels::isSpectatorItemsEnabled()) {
-            return [];
-        }
-
-        /** @var Item[] $items */
-        $items = [];
-
-        foreach ($data as $name => $value) {
-            $item = Item::get($value['id'], ($value['meta'] ?? 0), $value['count']);
-
-            $item->setCustomName(TextFormat::colorize($value['name']));
-            $item->setCustomBlockData(new CompoundTag("", [new StringTag('Name', $name), new StringTag('Command', $value['command'] ?? '')]));
+            $item->setCustomBlockData(new CompoundTag("", [new StringTag('Name', $name), $tag]));
 
             $items[$value['slot']] = $item;
         }

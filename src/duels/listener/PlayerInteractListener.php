@@ -6,10 +6,12 @@ namespace duels\listener;
 
 use duels\Duels;
 use duels\utils\ItemUtils;
+use pocketmine\command\ConsoleCommandSender;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\nbt\tag\StringTag;
 use pocketmine\Server;
 
 class PlayerInteractListener implements Listener {
@@ -36,9 +38,9 @@ class PlayerInteractListener implements Listener {
 
         if ($nameString == null || $nameString == '') return;
 
-        $commandString = $nbt->getString('Command');
+        $commands = $nbt->getListTag('Commands');
 
-        if ($commandString == null) return;
+        if ($commands == null) return;
 
         foreach (ItemUtils::getLobbyItems() as $lobbyItem) {
             $nbt = $lobbyItem->getCustomBlockData();
@@ -51,33 +53,15 @@ class PlayerInteractListener implements Listener {
 
             if ($newNameString !== $nameString) continue;
 
-            Server::getInstance()->dispatchCommand($player, $commandString);
+            foreach ($commands->getValue() as $namedTag) {
+                if (!$namedTag instanceof StringTag) continue;
 
-            break;
-        }
+                list($command, $console) = explode(':', $namedTag->getValue());
 
-        $arena = $session->getArena();
-
-        if ($arena == null) return;
-
-        if ($arena->isStarted()) {
-            foreach (ItemUtils::getSpectatorItems() as $lobbyItem) {
-                $nbt = $lobbyItem->getCustomBlockData();
-
-                if ($nbt == null) continue;
-
-                $newNameString = $nbt->getString('Name');
-
-                if ($newNameString == null || $newNameString == '') continue;
-
-                if ($newNameString !== $nameString) continue;
-
-                Server::getInstance()->dispatchCommand($player, $commandString);
-
-                break;
+                Server::getInstance()->dispatchCommand(($console ? new ConsoleCommandSender() : $player), str_replace('{0}', $player->getName(), $command));
             }
 
-            return;
+            break;
         }
     }
 
@@ -98,7 +82,7 @@ class PlayerInteractListener implements Listener {
 
         if ($nameString == null || $nameString == '') return;
 
-        $commandString = $nbt->getString('Command');
+        $commandString = $nbt->getString('Commands');
 
         if ($commandString == null) return;
 
@@ -121,7 +105,7 @@ class PlayerInteractListener implements Listener {
 
             if ($nameString == null || $nameString == '') return;
 
-            $commandString = $nbt->getString('Command');
+            $commandString = $nbt->getString('Commands');
 
             if ($commandString == null) return;
 
@@ -145,7 +129,7 @@ class PlayerInteractListener implements Listener {
 
             if ($nameString == null || $nameString == '') return;
 
-            $commandString = $nbt->getString('Command');
+            $commandString = $nbt->getString('Commands');
 
             if ($commandString == null) return;
 

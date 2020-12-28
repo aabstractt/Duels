@@ -6,6 +6,7 @@ mysql:
   username: "root"
   password: ""
 
+# Enable/disable the queue premium
 queue-premium-enabled: true
 
 # Button text of the kits
@@ -21,31 +22,25 @@ lobby-items:
     meta: 14
     count: 1
     name: "&r&c&lQueue Unranked"
-    command: "queue list unranked"
-    slot: 1
+    commands:
+      - name: "queue list unranked"
+        console: false
+    slot: 0
   join-queue-ranked:
     id: 355
     meta: 14
     count: 1
     name: "&r&c&lQueue Ranked"
-    command: "queue list ranked"
+    commands:
+      - name: "queue list ranked"
+        console: false
     slot: 1
   leave-queue:
     id: 355
     meta: 14
     count: 1
     name: "&r&c&lLeave queue"
-    command: "queue leave"
-    slot: 8
-
-# Spectator options
-spectator-items-enabled: false
-# Items
-spectator-items:
-  leave:
-    id: 355
-    meta: 14
-    count: 1
-    name: "&r&c&lLeave"
-    command: "leave"
+    commands:
+      - name: "queue leave"
+        console: false
     slot: 8
