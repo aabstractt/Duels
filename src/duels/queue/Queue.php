@@ -111,6 +111,6 @@ class Queue {
 
         if (count($sessionsAvailable) < 2) return;
 
-        Duels::getArenaFactory()->createArena($sessionsAvailable);
+        Duels::getArenaFactory()->createArena($sessionsAvailable, $this->isPremium());
     }
 }
