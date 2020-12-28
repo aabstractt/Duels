@@ -167,7 +167,11 @@ class Duels extends PluginBase {
      * @return string
      */
     public static function translatePlaceHolder(Queue $queue): string {
-        return '';
+        $placeHolders = self::$instance->getConfig()->get('placeHolders', []);
+
+        $text = $placeHolders[$queue->getKit()->getName()] ?? '';
+
+        return str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitArenas($queue->getKit()))], $text);
     }
 
     /**

@@ -43,6 +43,13 @@ class Queue {
     }
 
     /**
+     * @return Session[]
+     */
+    public function getSessions(): array {
+        return $this->sessions;
+    }
+
+    /**
      * @param Session $session
      * @return bool
      */

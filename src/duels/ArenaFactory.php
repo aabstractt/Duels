@@ -6,6 +6,7 @@ namespace duels;
 
 use duels\arena\Arena;
 use duels\arena\Level;
+use duels\kit\Kit;
 use duels\session\Session;
 use pocketmine\plugin\PluginException;
 use pocketmine\Server;
@@ -52,6 +53,23 @@ class ArenaFactory {
 
         foreach ($this->arenas as $arena) {
             if ($arena->getLevel()->getFolderName() !== $folderName) continue;
+
+            $arenas[$arena->getId()] = $arena;
+        }
+
+        return $arenas;
+    }
+
+    /**
+     * @param Kit $kit
+     * @return array<int, Arena>
+     */
+    public function getKitArenas(Kit $kit): array {
+        /** @var array<int, Arena> $arenas */
+        $arenas = [];
+
+        foreach ($this->arenas as $arena) {
+            if (strtolower($arena->getLevel()->getKit()->getName()) !== strtolower($kit->getName())) continue;
 
             $arenas[$arena->getId()] = $arena;
         }

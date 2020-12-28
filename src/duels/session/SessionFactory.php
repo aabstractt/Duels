@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\session;
 
 use duels\Duels;
+use duels\listener\BlockListener;
 use duels\listener\EntityListener;
 use duels\listener\PlayerListener;
 use pocketmine\Player;
@@ -20,7 +21,8 @@ class SessionFactory {
     public function __construct() {
         Duels::getInstance()->registerListeners(
             new PlayerListener(),
-            new EntityListener()
+            new EntityListener(),
+            new BlockListener()
         );
     }
 
