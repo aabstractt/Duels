@@ -27,7 +27,7 @@ class GameMatchUpdateTask extends GameUpdateTask {
 
         $players = $arena->getSessions();
 
-        if (count($players) <= 0) {
+        if (count($players) <= 1) {
             $this->cancel();
 
             $arena->finish($players);

@@ -42,9 +42,6 @@ class Queue {
         return $this->isPremium;
     }
 
-    /**
-     * @return Session[]
-     */
     public function getSessions(): array {
         return $this->sessions;
     }
@@ -93,7 +90,7 @@ class Queue {
         foreach ($this->sessions as $session) {
             $session->increaseQueueWaitingTime();
 
-            if (count($this->sessions) < 1) continue;
+            if (count($this->sessions) < 2) continue;
 
             if (count($sessionsAvailable) == 2) continue;
 
@@ -110,7 +107,7 @@ class Queue {
             $this->removeSession($session);
         }
 
-        if (count($sessionsAvailable) < 1) return;
+        if (count($sessionsAvailable) < 2) return;
 
         Duels::getArenaFactory()->createArena($sessionsAvailable);
     }
