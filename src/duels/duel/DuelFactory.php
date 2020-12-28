@@ -6,7 +6,7 @@ namespace duels\duel;
 
 class DuelFactory {
 
-    /** @var array<string, array<int, string>> */
+    /** @var array<string, array> */
     private $duels = [];
 
     /**
