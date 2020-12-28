@@ -119,7 +119,11 @@ class Session {
     public function getLastKiller(): ?Session {
         if ($this->lastKiller == null || $this->lastKillerTime == -1) return null;
 
-        $lastKiller = $this->arena->getSessionOrSpectator($this->lastKiller);
+        $arena = $this->arena;
+
+        if ($arena == null) return null;
+
+        $lastKiller = $arena->getSessionOrSpectator($this->lastKiller);
 
         if ($lastKiller == null) return null;
 
@@ -136,7 +140,11 @@ class Session {
     public function getLastAssistance(): ?Session {
         if ($this->lastAssistance == null || $this->lastAssistanceTime == -1) return null;
 
-        $lastAssistance = $this->arena->getSessionOrSpectator($this->lastAssistance);
+        $arena = $this->arena;
+
+        if ($arena == null) return null;
+
+        $lastAssistance = $arena->getSessionOrSpectator($this->lastAssistance);
 
         if ($lastAssistance == null) return null;
 
@@ -148,21 +156,21 @@ class Session {
     }
 
     /**
-     * @param Session $player
+     * @param Session $session
      */
-    public function attack(Session $player): void {
+    public function attack(Session $session): void {
         if ($this->lastKiller === null) {
-            $this->lastKiller = $player->getName();
+            $this->lastKiller = $session->getName();
 
             return;
         }
 
-        if (strtolower($player->getName()) !== strtolower($this->lastKiller)) {
+        if (strtolower($session->getName()) !== strtolower($this->lastKiller)) {
             $this->lastAssistance = $this->lastKiller;
 
             $this->lastAssistanceTime = time();
 
-            $this->lastKiller = $player->getName();
+            $this->lastKiller = $session->getName();
         }
 
         $this->lastKillerTime = time();
