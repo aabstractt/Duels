@@ -42,6 +42,9 @@ class Queue {
         return $this->isPremium;
     }
 
+    /**
+     * @return Session[]
+     */
     public function getSessions(): array {
         return $this->sessions;
     }
@@ -83,33 +86,35 @@ class Queue {
      * Search a opponent and arena
      */
     public function update(): void {
+        if (count($this->sessions) < 2) return;
+
         $sessionsAvailable = [];
 
         $timeWaiting = 0;
 
-        foreach ($this->sessions as $session) {
-            $session->increaseQueueWaitingTime();
+        foreach ($this->sessions as $session) $session->increaseQueueWaitingTime();
 
-            if (count($this->sessions) < 2) continue;
+        $intents = 0;
 
-            if (count($sessionsAvailable) == 2) continue;
+        while (count($sessionsAvailable) < 2 && $intents < 3) {
+            foreach ($this->sessions as $session) {
+                if (isset($sessionsAvailable[strtolower($session->getName())])) continue;
 
-            if (isset($sessionsAvailable[strtolower($session->getName())])) continue;
+                if ($timeWaiting > $session->getQueueWaitingTime()) continue;
 
-            //if ($timeWaiting > $session->getQueueWaitingTime()) continue;
+                if ($session->getArena() !== null) continue;
 
-            if ($session->getArena() !== null) continue;
+                $timeWaiting = 0;
 
-            $timeWaiting = 0;
+                $sessionsAvailable[strtolower($session->getName())] = $session;
 
-            $sessionsAvailable[strtolower($session->getName())] = $session;
+                $session->increaseQueueWaitingTime(1);
+            }
 
-            $session->increaseQueueWaitingTime(1);
+            $intents++;
         }
 
         if (count($sessionsAvailable) < 2) return;
-
-        foreach ($sessionsAvailable as $session) $this->removeSession($session);
 
         Duels::getArenaFactory()->createArena($sessionsAvailable, $this->isPremium());
     }

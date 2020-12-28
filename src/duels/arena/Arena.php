@@ -227,6 +227,8 @@ class Arena extends TaskHandlerStorage {
         foreach ($sessions as $session) {
             $this->addSession($session);
 
+            Duels::getQueueFactory()->removeSessionFromQueue($session);
+
             $session->loadOpponent();
 
             $session->sendMessage("&c&l" . $this->level->getKit()->getName() . " Duel&r\n&4- Map: &c" . $this->level->getFolderName() . "\n&4- Opponent: &c" . $session->getOpponentName());
