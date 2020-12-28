@@ -23,7 +23,7 @@ class LobbyItemsCommand extends SubCommand {
         $target = null;
 
         if ((isset($args[0]) && isset($args[1])) && (($permission = $this->getPermission()) !== null && $sender->hasPermission($permission))) {
-            if ($args[1] != 'enable' && $args[1] == 'disable') {
+            if ($args[1] != 'enable' && $args[1] != 'disable') {
                 $sender->sendMessage(TextFormat::RED . 'Usage: /config ' . $this->getName() . ' <player> <enable|disable>');
 
                 return;
