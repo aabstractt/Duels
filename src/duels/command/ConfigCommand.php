@@ -8,6 +8,7 @@ use duels\api\Command;
 use duels\command\subcommand\CreateCommand;
 use duels\command\subcommand\LobbyItemsCommand;
 use duels\command\subcommand\SpawnCommand;
+use duels\command\subcommand\TopCommand;
 
 class ConfigCommand extends Command {
 
@@ -20,7 +21,8 @@ class ConfigCommand extends Command {
         $this->addCommand(
             new CreateCommand('create', 'config.command.create'),
             new SpawnCommand('spawn', 'Set a spawn'),
-            new LobbyItemsCommand('lobbyitems', 'config.command.lobbyitems')
+            new LobbyItemsCommand('lobbyitems', 'config.command.lobbyitems'),
+            new TopCommand('top', 'config.command.top')
         );
     }
 }

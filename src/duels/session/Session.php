@@ -8,6 +8,7 @@ use duels\api\Form;
 use duels\arena\Arena;
 use duels\Duels;
 use duels\math\GameVector3;
+use duels\provider\TargetOffline;
 use duels\utils\ItemUtils;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
@@ -40,6 +41,8 @@ class Session {
     private $lastAssistance;
     /** @var int */
     private $lastAssistanceTime = -1;
+    /** @var TargetOffline|null */
+    private $targetOffline;
 
     /**
      * Session constructor.
@@ -47,6 +50,8 @@ class Session {
      */
     public function __construct(string $name) {
         $this->name = $name;
+
+        $this->targetOffline = Duels::getInstance()->getProvider()->getTargetOffline($name) ?? new TargetOffline(['username' => $name]);
     }
 
     /**
@@ -395,6 +400,8 @@ class Session {
 
             return;
         }
+
+        Duels::getInstance()->getProvider()->setTargetOffline($this->targetOffline);
 
         $this->setArena();
 

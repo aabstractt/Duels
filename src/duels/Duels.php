@@ -10,9 +10,12 @@ use duels\asyncio\FileDeleteAsyncTask;
 use duels\command\ConfigCommand;
 use duels\duel\DuelFactory;
 use duels\kit\KitFactory;
+use duels\provider\MysqlProvider;
 use duels\queue\Queue;
 use duels\queue\QueueFactory;
 use duels\session\SessionFactory;
+use duels\utils\LeaderboardEntity;
+use Exception;
 use pocketmine\event\Listener;
 use pocketmine\level\Level as pocketLevel;
 use pocketmine\plugin\PluginBase;
@@ -36,6 +39,8 @@ class Duels extends PluginBase {
     private static $kitFactory;
     /** @var DuelFactory */
     private static $duelFactory;
+    /** @var MysqlProvider */
+    private $provider;
 
     /**
      * @return Duels
@@ -87,6 +92,13 @@ class Duels extends PluginBase {
     }
 
     /**
+     * @return MysqlProvider
+     */
+    public function getProvider(): MysqlProvider {
+        return $this->provider;
+    }
+
+    /**
      * @param string $worldName
      */
     public function removeWorld(string $worldName): void {
@@ -105,6 +117,16 @@ class Duels extends PluginBase {
 
         self::$instance = $this;
 
+        try {
+            $this->provider = new MysqlProvider($this->getConfig()->get('mysql'));
+        } catch (Exception $e) {
+            $this->getLogger()->logException($e);
+
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+
+            return;
+        }
+
         self::$queueFactory = new QueueFactory();
 
         self::$kitFactory = new KitFactory();
@@ -122,6 +144,8 @@ class Duels extends PluginBase {
         self::$duelFactory = new DuelFactory();
 
         $this->getServer()->getCommandMap()->register(ConfigCommand::class, new ConfigCommand());
+
+        LeaderboardEntity::registerEntity(LeaderboardEntity::class, true);
     }
 
     /**

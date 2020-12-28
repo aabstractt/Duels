@@ -45,5 +45,7 @@ lobby-items:
         console: false
     slot: 8
 
-form-title-duel: 'DUEL KIT SELECTION'
-form-content-duel: 'Select a kit'
+form-title-duel: "DUEL KIT SELECTION"
+form-content-duel: "Select a kit"
+
+message-stats-players: "Stats of {0}\nWins: {1}\nLosses: {2}"
