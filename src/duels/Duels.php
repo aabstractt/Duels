@@ -123,11 +123,12 @@ class Duels extends PluginBase {
 
     /**
      * @param int $id
+     * @param bool $isPremium
      * @param Level $level
      * @return Arena
      */
-    public static function generateNewArena(int $id, Level $level): Arena {
-        return new Arena($id, $level);
+    public static function generateNewArena(int $id, bool $isPremium, Level $level): Arena {
+        return new Arena($id, $isPremium, $level);
     }
 
     /**
@@ -172,7 +173,7 @@ class Duels extends PluginBase {
 
         $text = $placeHolders[$queue->getKit()->getName()] ?? '';
 
-        return TextFormat::colorize(str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitArenas($queue->getKit()))], $text));
+        return TextFormat::colorize(str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitArenas($queue->getKit(), $queue->isPremium()))], $text));
     }
 
     /**

@@ -20,10 +20,11 @@ class ArenaFactory {
 
     /**
      * @param Session[] $sessions
+     * @param bool $isPremium
      * @param Level|null $level
      * @return void
      */
-    public function createArena(array $sessions, Level $level = null): void {
+    public function createArena(array $sessions, bool $isPremium, Level $level = null): void {
         if ($level === null) {
             $level = Duels::getLevelFactory()->getRandomLevel();
         }
@@ -33,7 +34,7 @@ class ArenaFactory {
                 throw new PluginException('Level not found');
             }
 
-            $arena = Duels::getInstance()->generateNewArena($this->gamesPlayed++, $level);
+            $arena = Duels::getInstance()->generateNewArena($this->gamesPlayed++, $isPremium, $level);
 
             $this->arenas[$arena->getId()] = $arena;
 
@@ -62,14 +63,17 @@ class ArenaFactory {
 
     /**
      * @param Kit $kit
+     * @param bool $isPremium
      * @return array<int, Arena>
      */
-    public function getKitArenas(Kit $kit): array {
+    public function getKitArenas(Kit $kit, bool $isPremium): array {
         /** @var array<int, Arena> $arenas */
         $arenas = [];
 
         foreach ($this->arenas as $arena) {
             if (strtolower($arena->getLevel()->getKit()->getName()) !== strtolower($kit->getName())) continue;
+
+            if ($arena->isPremium() != $isPremium) continue;
 
             $arenas[$arena->getId()] = $arena;
         }

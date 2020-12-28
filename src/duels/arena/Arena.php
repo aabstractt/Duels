@@ -23,6 +23,8 @@ class Arena extends TaskHandlerStorage {
     public const STATUS_IN_GAME = 4;
     public const STATUS_FINISHING = 5;
 
+    /** @var bool */
+    private $isPremium;
     /** @var Level */
     protected $level;
     /** @var string */
@@ -41,11 +43,14 @@ class Arena extends TaskHandlerStorage {
     /**
      * Arena constructor.
      * @param int $id
+     * @param bool $isPremium
      * @param Level $level
      * @param bool $scoreboardEnabled
      */
-    public function __construct(int $id, Level $level, bool $scoreboardEnabled = true) {
+    public function __construct(int $id, bool $isPremium, Level $level, bool $scoreboardEnabled = true) {
         parent::__construct($id);
+
+        $this->isPremium = $isPremium;
 
         $this->level = $level;
 
@@ -71,7 +76,7 @@ class Arena extends TaskHandlerStorage {
         if (!$scoreboardEnabled) return;
 
         $this->scoreboard = new Scoreboard($this,
-            TextFormat::DARK_RED . TextFormat::BOLD . 'Demonic',
+            TextFormat::DARK_RED . 'Demonic',
             Scoreboard::SIDEBAR);
     }
 
@@ -139,6 +144,13 @@ class Arena extends TaskHandlerStorage {
      */
     public function setStatus(int $status): void {
         $this->status = $status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPremium(): bool {
+        return $this->isPremium;
     }
 
     /**
