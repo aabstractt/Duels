@@ -100,6 +100,8 @@ class Queue {
 
             if ($session->getArena() !== null) continue;
 
+            $timeWaiting = 0;
+
             $sessionsAvailable[strtolower($session->getName())] = $session;
 
             $session->increaseQueueWaitingTime(1);
