@@ -36,6 +36,15 @@ class QueueFactory {
     }
 
     /**
+     * @param Kit $kit
+     */
+    public function removeQueue(Kit $kit): void {
+        if (empty($this->queue[strtolower($kit->getName())])) return;
+
+        unset($this->queue[strtolower($kit->getName())]);
+    }
+
+    /**
      * @return Queue[]
      */
     public function getQueues(): array {

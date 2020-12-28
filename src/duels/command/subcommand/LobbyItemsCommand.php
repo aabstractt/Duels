@@ -53,10 +53,12 @@ class LobbyItemsCommand extends SubCommand {
 
             $session->setLobbyItemsEnabled($args[(isset($args[1]) ? 1 : 0)] == 'enable');
 
-            if (strtolower($session->getName()) != $sender->getName()) {
-                $sender->sendMessage(TextFormat::GREEN . 'You have disabled lobby items to ' . $session->getName());
+            $value = strtolower($session->getName()) != strtolower($sender->getName());
+
+            if ($session->hasLobbyItemsEnabled()) {
+                $sender->sendMessage(TextFormat::colorize('You have enabled the lobby items' . ($value ? ' to ' . $session->getName() : '') . '.'));
             } else {
-                $sender->sendMessage(TextFormat::GREEN . 'You have disabled the lobby items.');
+                $sender->sendMessage(TextFormat::colorize('You have disabled the lobby items' . ($value ? ' to ' . $session->getName() : '') . '.'));
             }
 
             if ($session->getLevelNonNull() !== Server::getInstance()->getDefaultLevel()) return;

@@ -107,4 +107,22 @@ class ArenaFactory {
 
         unset($this->arenas[$id]);
     }
+
+    /**
+     * @param Session $session
+     * @param Session|null $killerSession
+     */
+    public function handlePlayerDeath(Session $session, ?Session $killerSession): void {
+        $arena = $session->getArena();
+
+        if ($arena == null) return;
+
+        $message = '&c' . $session->getName() . '&f was slain';
+
+        if ($killerSession != null) {
+            $message .= ' by &c' . $killerSession->getName();
+        }
+
+        $arena->broadcastMessage($message);
+    }
 }

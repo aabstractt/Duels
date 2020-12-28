@@ -208,6 +208,13 @@ class Session {
     }
 
     /**
+     * @return bool
+     */
+    public function hasLobbyItemsEnabled(): bool {
+        return $this->lobbyItemsEnabled;
+    }
+
+    /**
      * @param bool $value
      */
     public function setEnergized(bool $value = true): void {

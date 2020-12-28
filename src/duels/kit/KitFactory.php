@@ -51,9 +51,21 @@ class KitFactory {
 
         if ($kit == null) return;
 
+        Duels::getQueueFactory()->removeQueue($kit);
+
         $config = new Config(Duels::getInstance()->getDataFolder() . 'kits.json');
 
         $config->remove($kit->getName());
+
+        $config->save();
+
+        $config = Duels::getInstance()->getConfig();
+
+        $data = $config->get('placeHolders', []);
+
+        unset($data[$kit->getName()]);
+
+        $config->set('placeHolders', $data);
 
         $config->save();
 

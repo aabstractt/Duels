@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace duels\utils;
 
 use duels\Duels;
+use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
@@ -60,6 +62,24 @@ class ItemUtils {
         }
 
         return $item;
+    }
+
+    /**
+     * @param EffectInstance $effect
+     * @return string
+     */
+    public static function effectToString(EffectInstance $effect): string {
+        return $effect->getId() . ':' . $effect->getDuration() . ':' . $effect->getAmplifier();
+    }
+
+    /**
+     * @param string $string
+     * @return EffectInstance
+     */
+    public static function stringToEffect(string $string): EffectInstance {
+        list($id, $duration, $amplifier) = explode(':', $string);
+
+        return new EffectInstance(Effect::getEffect((int)$id), (int)$duration, (int)$amplifier);
     }
 
     /**

@@ -27,7 +27,7 @@ class GameMatchUpdateTask extends GameUpdateTask {
 
         $players = $arena->getSessions();
 
-        if (count($players) <= 1) {
+        if (count($players) <= 0) {
             $this->cancel();
 
             $arena->finish($players);
@@ -35,7 +35,7 @@ class GameMatchUpdateTask extends GameUpdateTask {
             return;
         }
 
-        $arena->getScoreboard()->setLine(10, '&fTime left: &d' . date('i:s', ((5*60) - $this->timePassed)));
+        $arena->getScoreboard()->setLine(9, '&4Time left: &c' . date('i:s', ((5*60) - $this->timePassed)));
 
         $this->timePassed++;
     }

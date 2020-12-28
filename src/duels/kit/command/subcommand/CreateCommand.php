@@ -38,6 +38,10 @@ class CreateCommand extends PlayerSubCommand {
             $data['inventory'][$slot] = ItemUtils::itemToString($content);
         }
 
+        foreach ($instance->getEffects() as $effectInstance) {
+            $data['effects'][] = ItemUtils::effectToString($effectInstance);
+        }
+
         (new Kit($name, $data))->handleUpdate();
 
         Duels::getInstance()->addPlaceHolder($name, implode(' ', $args));

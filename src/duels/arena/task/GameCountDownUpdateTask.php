@@ -58,7 +58,7 @@ class GameCountDownUpdateTask extends GameUpdateTask {
                 return;
             }
 
-            $arena->getScoreboard()->setLine(9, '&fStarting: &d' . $this->countdown);
+            $arena->getScoreboard()->setLine(9, '&4Starting: &c' . $this->countdown);
 
             $this->countdown--;
 

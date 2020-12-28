@@ -17,6 +17,7 @@ use pocketmine\level\Level as pocketLevel;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginException;
 use pocketmine\Server;
+use pocketmine\utils\TextFormat;
 
 class Duels extends PluginBase {
 
@@ -171,7 +172,7 @@ class Duels extends PluginBase {
 
         $text = $placeHolders[$queue->getKit()->getName()] ?? '';
 
-        return str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitArenas($queue->getKit()))], $text);
+        return TextFormat::colorize(str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitArenas($queue->getKit()))], $text));
     }
 
     /**

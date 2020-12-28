@@ -49,6 +49,8 @@ class EntityListener implements Listener {
 
         if (($entity->getHealth() - $ev->getFinalDamage()) / 2 > 0) return;
 
+        Duels::getArenaFactory()->handlePlayerDeath($session, $session->getLastKiller());
+
         $ev->setCancelled();
     }
 

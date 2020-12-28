@@ -71,7 +71,7 @@ class Arena extends TaskHandlerStorage {
         if (!$scoreboardEnabled) return;
 
         $this->scoreboard = new Scoreboard($this,
-            TextFormat::AQUA . TextFormat::BOLD . strtoupper(Duels::getInstance()->getName()),
+            TextFormat::DARK_RED . TextFormat::BOLD . 'Demonic',
             Scoreboard::SIDEBAR);
     }
 
@@ -216,15 +216,15 @@ class Arena extends TaskHandlerStorage {
             $this->scoreboard->setLines([
                 11 => '&7' . date('d/m/y') . ' &8Match-' . $this->getId(),
                 10 => '',
-                9 => '&fStarting: &d0',
+                9 => '&4Starting: &c0',
                 8 => '',
-                7 => '&fOpponent:',
-                6 => '&d' . $session->getOpponentName(),
+                7 => '&4Opponent:',
+                6 => '&c' . $session->getOpponentName(),
                 5 => '',
-                4 => '&fMap: &d' . $this->level->getFolderName(),
-                3 => '&fKit: &d' . $this->level->getKit()->getName(),
+                4 => '&4Map: &c' . $this->level->getFolderName(),
+                3 => '&4Kit: &c' . $this->level->getKit()->getName(),
                 2 => '',
-                1 => '&dip'
+                1 => '&cplay.demonic.uk.to'
             ], $session);
 
             $session->setDefaultLobbyAttributes();

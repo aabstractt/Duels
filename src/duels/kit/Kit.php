@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace duels\kit;
 
 use duels\Duels;
@@ -60,8 +62,16 @@ class Kit {
 
         $instance->getInventory()->clearAll();
 
+        $effects = $this->data['effects'] ?? [];
+
+        $instance->removeAllEffects();
+
         foreach ($inventory as $slot => $content) {
             $instance->getInventory()->setItem($slot, ItemUtils::stringToItem($content));
+        }
+
+        foreach ($effects as $effect) {
+            $instance->addEffect(ItemUtils::stringToEffect($effect));
         }
     }
 }
