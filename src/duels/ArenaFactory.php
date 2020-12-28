@@ -117,11 +117,19 @@ class ArenaFactory {
 
         if ($arena == null) return;
 
+        $pos = $arena->getLevel()->getSlotPosition($session->getSlot(), $arena->getWorldNonNull());
+
         $message = '&c' . $session->getName() . '&f was slain';
 
         if ($killerSession != null) {
             $message .= ' by &c' . $killerSession->getName();
+
+            $pos = $killerSession->getGeneralPlayer()->asPosition();
         }
+
+        $session->setResetPlayerAttributes();
+
+        $session->teleport($pos);
 
         $arena->broadcastMessage($message);
     }

@@ -349,6 +349,8 @@ class Session {
 
         $instance->setGamemode($instance::SURVIVAL);
 
+        $this->setImmobile(false);
+
         if ($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() || !$this->lobbyItemsEnabled) return;
 
         $instance->getInventory()->setContents(ItemUtils::getLobbyItems());
@@ -356,10 +358,24 @@ class Session {
 
     public function setResetPlayerAttributes(): void {
         $this->setDefaultLobbyAttributes();
+
+        $instance = $this->getGeneralPlayer();
+
+        $instance->setAllowFlight(true);
+        $instance->setFlying(true);
     }
 
+    /**
+     * Send the player won values
+     */
     public function handleWin(): void {
+        $this->sendTitle('&c&lGame finished!', '&aYou won!');
 
+        $arena = $this->getArena();
+
+        if ($arena == null) return;
+
+        $arena->broadcastMessage('&c' . $this->getName() . ' &fwon the &c' . $arena->getLevel()->getKit()->getName() . '&4 duel!');
     }
 
     /**
@@ -369,6 +385,8 @@ class Session {
         $arena = $this->arena;
 
         if ($arena == null) return;
+
+        $arena->getScoreboard()->removePlayer($this);
 
         $arena->removeSessionOrSpectator($this);
 

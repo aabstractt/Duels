@@ -169,6 +169,12 @@ class Arena extends TaskHandlerStorage {
 
         $this->broadcastMessage('&aThe match has started, good luck!');
 
+        foreach ($this->sessions as $session) {
+            $session->setImmobile(false);
+
+            $session->setEnergized(strtolower($this->level->getKitName()) == 'sumo');
+        }
+
         $this->scheduleRepeatingTask(new GameMatchUpdateTask('game_match_update', $this));
     }
 
@@ -211,6 +217,8 @@ class Arena extends TaskHandlerStorage {
 
             $session->loadOpponent();
 
+            $session->sendMessage("&c&l" . $this->level->getKit()->getName() . " Duel&r\n&4- Map: &c" . $this->level->getFolderName() . "\n&4- Opponent: &c" . $session->getOpponentName());
+
             $session->setEnergized();
 
             $this->scoreboard->setLines([
@@ -234,6 +242,8 @@ class Arena extends TaskHandlerStorage {
             $session->teleport($this->level->getSlotPosition($session->getSlot(), $this->getWorldNonNull()));
 
             $this->level->getKit()->giveKit($session);
+
+            $session->setImmobile();
         }
     }
 
