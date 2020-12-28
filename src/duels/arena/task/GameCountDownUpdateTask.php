@@ -19,7 +19,7 @@ class GameCountDownUpdateTask extends GameUpdateTask {
      * @param Arena $arena
      * @param int $initialCountdown
      */
-    public function __construct(string $taskName, Arena $arena, $initialCountdown = 30) {
+    public function __construct(string $taskName, Arena $arena, $initialCountdown = 5) {
         parent::__construct($taskName, $arena);
 
         $this->initialCountdown = $initialCountdown;

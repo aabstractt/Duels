@@ -88,6 +88,7 @@ class Queue {
     public function update(): void {
         if (count($this->sessions) < 2) return;
 
+        /** @var array<string, Session> $sessionsAvailable */
         $sessionsAvailable = [];
 
         $timeWaiting = 0;

@@ -220,13 +220,14 @@ class Arena extends TaskHandlerStorage {
     public function addSessions(array $sessions): void {
         $this->scoreboard->removePlayer();
 
+        // TODO: Hack for the loadOpponent
+        foreach ($sessions as $session) $this->addSession($session);
+
         $this->scoreboard->addPlayer();
 
         $slot = 1;
 
         foreach ($sessions as $session) {
-            $this->addSession($session);
-
             Duels::getQueueFactory()->removeSessionFromQueue($session);
 
             $session->loadOpponent();
