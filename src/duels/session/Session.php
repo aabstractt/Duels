@@ -10,6 +10,7 @@ use duels\Duels;
 use duels\math\GameVector3;
 use duels\provider\TargetOffline;
 use duels\utils\ItemUtils;
+use Exception;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
@@ -41,12 +42,13 @@ class Session {
     private $lastAssistance;
     /** @var int */
     private $lastAssistanceTime = -1;
-    /** @var TargetOffline|null */
+    /** @var TargetOffline */
     private $targetOffline;
 
     /**
      * Session constructor.
      * @param string $name
+     * @throws Exception
      */
     public function __construct(string $name) {
         $this->name = $name;
@@ -401,12 +403,18 @@ class Session {
             return;
         }
 
-        Duels::getInstance()->getProvider()->setTargetOffline($this->targetOffline);
-
         $this->setArena();
 
         $this->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
 
         $this->setDefaultLobbyAttributes();
+
+        try {
+            Duels::getInstance()->getProvider()->setTargetOffline($this->targetOffline);
+        } catch (Exception $e) {
+            Duels::getInstance()->getLogger()->logException($e);
+
+            $this->getGeneralPlayer()->kick($e->getMessage());
+        }
     }
 }

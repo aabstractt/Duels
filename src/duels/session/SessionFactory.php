@@ -11,6 +11,7 @@ use duels\listener\InventoryListener;
 use duels\listener\LevelListener;
 use duels\listener\PlayerInteractListener;
 use duels\listener\PlayerListener;
+use Exception;
 use pocketmine\Player;
 
 class SessionFactory {
@@ -34,6 +35,7 @@ class SessionFactory {
 
     /**
      * @param string $name
+     * @throws Exception
      */
     public function createSession(string $name): void {
         $session = $this->sessions[strtolower($name)] = new Session($name);

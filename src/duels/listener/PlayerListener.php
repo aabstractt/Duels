@@ -22,7 +22,13 @@ class PlayerListener implements Listener {
     public function onPlayerJoinEvent(PlayerJoinEvent $ev): void {
         $player = $ev->getPlayer();
 
-        Duels::getSessionFactory()->createSession($player->getName());
+        try {
+            Duels::getSessionFactory()->createSession($player->getName());
+        } catch (\Exception $e) {
+            Duels::getInstance()->getLogger()->logException($e);
+
+            $player->kick($e->getMessage());
+        }
     }
 
     /**

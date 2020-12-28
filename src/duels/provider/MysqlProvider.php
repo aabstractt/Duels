@@ -8,6 +8,7 @@ use duels\Duels;
 use duels\provider\command\StatsCommand;
 use Exception;
 use mysqli;
+use mysqli_result;
 use pocketmine\Server;
 
 class MysqlProvider {
