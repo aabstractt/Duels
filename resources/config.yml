@@ -16,12 +16,19 @@ placeHolders:
 lobby-items-enabled: false
 # Items
 lobby-items:
-  join-queue:
+  join-queue-unranked:
     id: 355
     meta: 14
     count: 1
-    name: "&r&c&lJoin to queue"
-    command: "queue join"
+    name: "&r&c&lQueue Unranked"
+    command: "queue list unranked"
+    slot: 1
+  join-queue-ranked:
+    id: 355
+    meta: 14
+    count: 1
+    name: "&r&c&lQueue Ranked"
+    command: "queue list ranked"
     slot: 1
   leave-queue:
     id: 355
