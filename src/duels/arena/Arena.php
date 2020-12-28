@@ -212,6 +212,8 @@ class Arena extends TaskHandlerStorage {
         $session->setArena($this);
 
         $this->getScoreboard()->addPlayer($session);
+
+        Duels::getDuelFactory()->removeDuels($session->getName());
     }
 
     /**
@@ -222,8 +224,6 @@ class Arena extends TaskHandlerStorage {
 
         // TODO: Hack for the loadOpponent
         foreach ($sessions as $session) $this->addSession($session);
-
-        $this->scoreboard->addPlayer();
 
         $slot = 1;
 

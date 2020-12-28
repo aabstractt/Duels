@@ -8,6 +8,7 @@ use duels\arena\Arena;
 use duels\arena\Level;
 use duels\asyncio\FileDeleteAsyncTask;
 use duels\command\ConfigCommand;
+use duels\duel\DuelFactory;
 use duels\kit\KitFactory;
 use duels\queue\Queue;
 use duels\queue\QueueFactory;
@@ -33,6 +34,8 @@ class Duels extends PluginBase {
     private static $sessionFactory;
     /** @var KitFactory */
     private static $kitFactory;
+    /** @var DuelFactory */
+    private static $duelFactory;
 
     /**
      * @return Duels
@@ -77,6 +80,13 @@ class Duels extends PluginBase {
     }
 
     /**
+     * @return DuelFactory
+     */
+    public static function getDuelFactory(): DuelFactory {
+        return self::$duelFactory;
+    }
+
+    /**
      * @param string $worldName
      */
     public function removeWorld(string $worldName): void {
@@ -108,6 +118,8 @@ class Duels extends PluginBase {
         self::$arenaFactory = new ArenaFactory();
 
         self::$sessionFactory = new SessionFactory();
+
+        self::$duelFactory = new DuelFactory();
 
         $this->getServer()->getCommandMap()->register(ConfigCommand::class, new ConfigCommand());
     }

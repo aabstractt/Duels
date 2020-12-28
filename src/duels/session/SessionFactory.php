@@ -71,6 +71,8 @@ class SessionFactory {
 
         Duels::getQueueFactory()->removeSessionFromQueue($session);
 
+        Duels::getDuelFactory()->removeDuels($player->getName());
+
         $session->remove(true);
 
         unset($this->sessions[strtolower($player->getName())]);

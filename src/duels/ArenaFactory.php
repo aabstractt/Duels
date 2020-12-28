@@ -21,12 +21,13 @@ class ArenaFactory {
     /**
      * @param Session[] $sessions
      * @param bool $isPremium
+     * @param Kit $kit
      * @param Level|null $level
      * @return void
      */
-    public function createArena(array $sessions, bool $isPremium, Level $level = null): void {
+    public function createArena(array $sessions, bool $isPremium, Kit $kit, Level $level = null): void {
         if ($level === null) {
-            $level = Duels::getLevelFactory()->getRandomLevel();
+            $level = Duels::getLevelFactory()->getRandomLevel($kit);
         }
 
         try {

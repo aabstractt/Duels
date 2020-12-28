@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels;
 
 use duels\arena\Level;
+use duels\kit\Kit;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
@@ -57,15 +58,18 @@ class LevelFactory {
     }
 
     /**
+     * @param Kit $kit
      * @return Level|null
      */
-    public function getRandomLevel(): ?Level {
+    public function getRandomLevel(Kit $kit): ?Level {
         /** @var Level|null $betterLevel */
         $betterLevel = null;
 
         $arenasCount = PHP_INT_MAX;
 
         foreach ($this->levels as $level) {
+            if (strtolower($level->getKit()->getName()) != strtolower($kit->getName())) continue;
+
             if ($betterLevel == null) {
                 $betterLevel = $level;
 

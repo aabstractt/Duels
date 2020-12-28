@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace duels\queue;
 
+use duels\duel\DuelCommand;
 use duels\Duels;
 use duels\kit\Kit;
 use duels\queue\command\QueueCommand;
@@ -24,6 +25,8 @@ class QueueFactory {
      */
     public function __construct() {
         Server::getInstance()->getCommandMap()->register(QueueCommand::class, new QueueCommand());
+
+        Server::getInstance()->getCommandMap()->register(DuelCommand::class, new DuelCommand());
 
         Duels::getInstance()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
             $this->handleQueue();

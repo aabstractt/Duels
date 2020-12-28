@@ -44,3 +44,6 @@ lobby-items:
       - name: "queue leave"
         console: false
     slot: 8
+
+form-title-duel: 'DUEL KIT SELECTION'
+form-content-duel: 'Select a kit'

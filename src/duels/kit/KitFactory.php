@@ -73,6 +73,13 @@ class KitFactory {
     }
 
     /**
+     * @return Kit[]
+     */
+    public function getKits(): array {
+        return $this->kits;
+    }
+
+    /**
      * @param string $kitName
      * @return Kit|null
      */

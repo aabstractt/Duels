@@ -399,5 +399,7 @@ class Session {
         $this->setArena();
 
         $this->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
+
+        $this->setDefaultLobbyAttributes();
     }
 }

@@ -14,20 +14,14 @@ class TaskScheduler {
     /**
      * @param GameTask $task
      * @param int $ticks
+     * @param bool $addTask
      */
-    public static function scheduleRepeatingTask(GameTask $task, int $ticks = 20): void {
-        self::addTask($task->getTaskName(), $task->getTaskId());
+    public static function scheduleRepeatingTask(GameTask $task, int $ticks = 20, bool $addTask = true): void {
+        if ($addTask) {
+            self::addTask($task->getTaskName(), $task->getTaskId());
+        }
 
         Duels::getInstance()->getScheduler()->scheduleRepeatingTask($task, $ticks);
-    }
-
-    /**
-     * @param GameTask $task
-     * @param int $ticks
-     * @param int $period
-     */
-    public static function scheduleDelayedRepeatingTask(GameTask $task, int $ticks = 20, int $period = 20): void {
-        Duels::getInstance()->getScheduler()->scheduleDelayedRepeatingTask($task, $ticks, $period);
     }
 
     /**

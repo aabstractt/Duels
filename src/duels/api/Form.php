@@ -30,9 +30,7 @@ class Form implements IForm {
      * Handles a form response from a player.
      *
      * @param Player $player
-     * @param int|null $data
-     *
-     * @noinspection PhpMissingParamTypeInspection
+     * @param int|bool|null $data
      */
     public function handleResponse(Player $player, $data): void {
         ($this->callback)(Duels::getSessionFactory()->getSessionPlayer($player), $data);
