@@ -16,8 +16,8 @@ class JoinCommand extends PlayerSubCommand {
      * @param array $args
      */
     public function onRun(Session $session, array $args): void {
-        if (empty($args[0])) {
-            $session->sendMessage(TextFormat::RED . 'Usage: /queue ' . $this->getName() . ' <kit>');
+        if (!isset($args[0], $args[1])) {
+            $session->sendMessage(TextFormat::RED . 'Usage: /queue ' . $this->getName() . ' <kit> <premium> (true/false)');
 
             return;
         }
@@ -30,7 +30,15 @@ class JoinCommand extends PlayerSubCommand {
             return;
         }
 
-        $queue = Duels::getQueueFactory()->getQueueByKit($kit);
+        $queue = Duels::getQueueFactory()->getQueueByKit($kit, $args[1] == 'true');
+
+        if ($queue->isPremium()) {
+            if (!$session->getGeneralPlayer()->hasPermission($this->getPermission() . '.premium')) {
+                $session->sendMessage(TextFormat::RED . 'You don\'t have permission to join this queue');
+
+                return;
+            }
+        }
 
         if ($queue->addSession($session)) {
             $session->sendMessage(TextFormat::GREEN . 'You now are in queue for ' . $kit->getName() . '.');

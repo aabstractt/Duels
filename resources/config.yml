@@ -6,6 +6,8 @@ mysql:
   username: "root"
   password: ""
 
+queue-premium-enabled: true
+
 # Button text of the kits
 placeHolders:
   SG: "&bSG\n&8{0} Queue | {1} Playing"

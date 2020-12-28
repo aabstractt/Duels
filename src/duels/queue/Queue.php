@@ -22,7 +22,7 @@ class Queue {
      * @param Kit $kit
      * @param bool $isPremium
      */
-    public function __construct(Kit $kit, bool $isPremium) {
+    public function __construct(Kit $kit, bool $isPremium = true) {
         $this->kit = $kit;
 
         $this->isPremium = $isPremium;

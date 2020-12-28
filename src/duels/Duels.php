@@ -178,6 +178,13 @@ class Duels extends PluginBase {
     /**
      * @return bool
      */
+    public static function isQueuePremiumEnabled(): bool {
+        return self::$instance->getConfig()->get('queue-premium-enabled', false);
+    }
+
+    /**
+     * @return bool
+     */
     public static function isLobbyItemsEnabled(): bool {
         return self::$instance->getConfig()->get('lobby-items-enabled', false);
     }

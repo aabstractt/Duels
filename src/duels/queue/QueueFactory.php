@@ -14,7 +14,9 @@ use pocketmine\Server;
 class QueueFactory {
 
     /** @var array<string, Queue> */
-    private $queue = [];
+    private $queueRanked = [];
+    /** @var array<string, Queue> */
+    private $queueUnranked = [];
 
     /**
      * QueueFactory constructor.
@@ -32,46 +34,66 @@ class QueueFactory {
      * @param Kit $kit
      */
     public function createQueue(Kit $kit): void {
-        $this->queue[strtolower($kit->getName())] = new Queue($kit, false);
+        $this->queueUnranked[strtolower($kit->getName())] = new Queue($kit, false);
+
+        if (!Duels::isQueuePremiumEnabled()) return;
+
+        $this->queueRanked[strtolower($kit->getName())] = new Queue($kit);
     }
 
     /**
      * @param Kit $kit
      */
     public function removeQueue(Kit $kit): void {
-        if (empty($this->queue[strtolower($kit->getName())])) return;
+        if (empty($this->queueUnranked[strtolower($kit->getName())])) return;
 
-        unset($this->queue[strtolower($kit->getName())]);
+        unset($this->queueUnranked[strtolower($kit->getName())]);
+
+        if (empty($this->queueRanked[strtolower($kit->getName())])) return;
+
+        unset($this->queueRanked[strtolower($kit->getName())]);
     }
 
     /**
      * @return Queue[]
      */
     public function getQueues(): array {
-        return $this->queue;
+        return array_merge($this->queueUnranked, $this->queueRanked);
     }
 
     /**
      * @param Kit $kit
+     * @param bool $isPremium
      * @return Queue
      */
-    public function getQueueByKit(Kit $kit): Queue {
-        return $this->getQueueByKitName($kit->getName());
+    public function getQueueByKit(Kit $kit, bool $isPremium): Queue {
+        return $this->getQueueByKitName($kit->getName(), $isPremium);
     }
 
     /**
      * @param string $kitName
+     * @param bool $isPremium
      * @return Queue
      */
-    public function getQueueByKitName(string $kitName): Queue {
-        return $this->queue[strtolower($kitName)];
+    public function getQueueByKitName(string $kitName, bool $isPremium): Queue {
+        if ($isPremium && Duels::isQueuePremiumEnabled()) {
+            return $this->queueRanked[strtolower($kitName)];
+        }
+
+        return $this->queueUnranked[strtolower($kitName)];
     }
 
     /**
      * @param Session $session
      */
     public function removeSessionFromQueue(Session $session): void {
-        foreach ($this->queue as $queue) {
+        foreach ($this->queueUnranked as $queue) {
+            if (!$queue->hasSession($session)) continue;
+
+            $queue->removeSession($session);
+        }
+
+        foreach ($this->queueRanked as $queue) {
             if (!$queue->hasSession($session)) continue;
 
             $queue->removeSession($session);
@@ -83,7 +105,13 @@ class QueueFactory {
      * @return Queue|null
      */
     public function getSessionQueue(Session $session): ?Queue {
-        foreach ($this->queue as $queue) {
+        foreach ($this->queueUnranked as $queue) {
+            if (!$queue->hasSession($session)) continue;
+
+            return $queue;
+        }
+
+        foreach ($this->queueRanked as $queue) {
             if (!$queue->hasSession($session)) continue;
 
             return $queue;
@@ -93,7 +121,11 @@ class QueueFactory {
     }
 
     protected function handleQueue(): void {
-        foreach ($this->queue as $queue) {
+        foreach ($this->queueUnranked as $queue) {
+            $queue->update();
+        }
+
+        foreach ($this->queueRanked as $queue) {
             $queue->update();
         }
     }
