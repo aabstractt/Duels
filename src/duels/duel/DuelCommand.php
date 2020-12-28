@@ -60,6 +60,20 @@ class DuelCommand extends Command {
 
         $sessionTarget = Duels::getSessionFactory()->getSessionPlayer($target);
 
+        if ($sessionTarget->inArena()) {
+            $sender->sendMessage(TextFormat::RED . 'The player is already in an arena');
+
+            return;
+        }
+
+        $session = Duels::getSessionFactory()->getSessionPlayer($sender);
+
+        if ($session->inArena()) {
+            $sender->sendMessage(TextFormat::RED . 'You are already in an arena');
+
+            return;
+        }
+
         $data = [
             'type' => 'form',
             'title' => Duels::getInstance()->getConfig()->get('form-title-duel', ''),
@@ -70,8 +84,6 @@ class DuelCommand extends Command {
         $queues = Duels::getQueueFactory()->getQueuesUnranked();
 
         foreach ($queues as $queue) $data['buttons'][] = ['text' => Duels::translatePlaceHolder($queue)];
-
-        $session = Duels::getSessionFactory()->getSessionPlayer($sender);
 
         $session->sendForm(function (Session $session, ?int $data) use($sessionTarget, $queues): void {
             if ($data === null) return;
@@ -86,6 +98,9 @@ class DuelCommand extends Command {
 
             $sessionTarget->sendForm(function (Session $sessionTarget, ?bool $data) use($session, $queue): void {
                 if ($data === null) $data = false;
+
+                if ($session->inArena()) $data = false;
+                if ($sessionTarget->inArena()) $data = false;
 
                 if ($data) {
                     Duels::getArenaFactory()->createArena([$session, $sessionTarget], $queue->isPremium(), $queue->getKit());

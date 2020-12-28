@@ -136,6 +136,8 @@ class ArenaFactory {
 
         $session->teleport($pos);
 
+        $session->remove();
+
         $arena->broadcastMessage($message);
     }
 }
