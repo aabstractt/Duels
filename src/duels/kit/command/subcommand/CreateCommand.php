@@ -24,7 +24,7 @@ class CreateCommand extends PlayerSubCommand {
             return;
         }
 
-        $name = array_shift($args[0]);
+        $name = array_shift($args);
 
         $data = [];
 
