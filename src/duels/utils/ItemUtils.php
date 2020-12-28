@@ -79,7 +79,13 @@ class ItemUtils {
     public static function stringToEffect(string $string): EffectInstance {
         list($id, $duration, $amplifier) = explode(':', $string);
 
-        return new EffectInstance(Effect::getEffect((int)$id), (int)$duration, (int)$amplifier);
+        $effect = Effect::getEffect((int)$id);
+
+        if ($effect == null) {
+            throw new PluginException('Invalid effect');
+        }
+
+        return new EffectInstance($effect, (int)$duration, (int)$amplifier);
     }
 
     /**
