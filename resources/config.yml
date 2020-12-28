@@ -14,12 +14,19 @@ placeHolders:
 lobby-items-enabled: false
 # Items
 lobby-items:
-  leave:
+  join-queue:
     id: 355
     meta: 14
     count: 1
     name: "&r&c&lJoin to queue"
     command: "queue join"
+    slot: 1
+  leave-queue:
+    id: 355
+    meta: 14
+    count: 1
+    name: "&r&c&lLeave queue"
+    command: "queue leave"
     slot: 8
 
 # Spectator options
