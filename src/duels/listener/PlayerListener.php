@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\listener;
 
 use duels\Duels;
+use Exception;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -24,7 +25,7 @@ class PlayerListener implements Listener {
 
         try {
             Duels::getSessionFactory()->createSession($player->getName());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Duels::getInstance()->getLogger()->logException($e);
 
             $player->kick($e->getMessage());

@@ -382,6 +382,8 @@ class Session {
 
         if ($arena == null) return;
 
+        $this->targetOffline->increaseWins();
+
         $arena->broadcastMessage('&c' . $this->getName() . ' &fwon the &c' . $arena->getLevel()->getKit()->getName() . '&4 duel!');
     }
 
@@ -400,8 +402,12 @@ class Session {
         if (!$teleport) {
             $arena->addSpectator($this);
 
+            $this->targetOffline->increaseLosses();
+
             return;
         }
+
+        if (!$this->isSpectator()) Duels::getArenaFactory()->handlePlayerDeath($this, $this->getLastKiller());
 
         $this->setArena();
 
