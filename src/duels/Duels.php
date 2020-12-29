@@ -209,7 +209,7 @@ class Duels extends PluginBase {
 
         $text = $placeHolders[$queue->getKit()->getName()] ?? '';
 
-        return TextFormat::colorize(str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitArenas($queue->getKit(), $queue->isPremium()))], $text));
+        return TextFormat::colorize(str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitSessions($queue->getKit(), $queue->isPremium()))], $text));
     }
 
     /**

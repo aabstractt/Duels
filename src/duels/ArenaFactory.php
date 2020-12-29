@@ -83,6 +83,22 @@ class ArenaFactory {
     }
 
     /**
+     * @param Kit $kit
+     * @param bool $isPremium
+     * @return Session[]
+     */
+    public function getKitSessions(Kit $kit, bool $isPremium): array {
+        /** @var array<string, Session> $sessions */
+        $sessions = [];
+
+        foreach ($this->getKitArenas($kit, $isPremium) as $arena) {
+            $sessions = array_merge($sessions, $arena->getSessions());
+        }
+
+        return $sessions;
+    }
+
+    /**
      * @param Session $session
      * @return Arena|null
      */
