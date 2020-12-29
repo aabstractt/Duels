@@ -24,7 +24,7 @@ class PlayerInteractListener implements Listener {
     public function onPlayerInteractEvent(PlayerInteractEvent $ev): void {
         $player = $ev->getPlayer();
 
-        $session = Duels::getSessionFactory()->getSessionPlayerNullable($player->getName());
+        $session = Duels::getSessionFactory()->getSessionPlayerNullable($player);
 
         if ($session == null) return;
 
@@ -82,7 +82,7 @@ class PlayerInteractListener implements Listener {
 
         if ($nameString == null || $nameString == '') return;
 
-        $commandString = $nbt->getString('Commands');
+        $commandString = $nbt->getListTag('Commands');
 
         if ($commandString == null) return;
 
@@ -105,7 +105,7 @@ class PlayerInteractListener implements Listener {
 
             if ($nameString == null || $nameString == '') return;
 
-            $commandString = $nbt->getString('Commands');
+            $commandString = $nbt->getListTag('Commands');
 
             if ($commandString == null) return;
 
@@ -129,7 +129,7 @@ class PlayerInteractListener implements Listener {
 
             if ($nameString == null || $nameString == '') return;
 
-            $commandString = $nbt->getString('Commands');
+            $commandString = $nbt->getListTag('Commands');
 
             if ($commandString == null) return;
 

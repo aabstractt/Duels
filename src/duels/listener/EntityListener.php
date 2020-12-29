@@ -23,7 +23,7 @@ class EntityListener implements Listener {
 
         if (!$entity instanceof Player) return;
 
-        $session = Duels::getSessionFactory()->getSessionPlayer($entity);
+        $session = Duels::getSessionFactory()->getSessionPlayerNullable($entity);
 
         if ($session == null) return;
 
@@ -64,7 +64,9 @@ class EntityListener implements Listener {
 
         if (!$entity instanceof Player) return;
 
-        $session = Duels::getSessionFactory()->getSessionPlayer($entity);
+        $session = Duels::getSessionFactory()->getSessionPlayerNullable($entity);
+
+        if ($session == null) return;
 
         if (!$session->inArena()) return;
 

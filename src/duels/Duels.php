@@ -195,7 +195,7 @@ class Duels extends PluginBase {
     public function addPlaceHolder(string $kitName, string $placeholder): void {
         $config = $this->getConfig();
 
-        $config->set('placeHolders', array_merge($config->get('placeHolders'), [$kitName => $placeholder]));
+        $config->set('placeHolders', array_merge($config->get('placeHolders', []), [$kitName => $placeholder]));
 
         $config->save();
     }
@@ -224,12 +224,5 @@ class Duels extends PluginBase {
      */
     public static function isLobbyItemsEnabled(): bool {
         return self::$instance->getConfig()->get('lobby-items-enabled', false);
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isSpectatorItemsEnabled(): bool {
-        return self::$instance->getConfig()->get('spectator-items-enabled', false);
     }
 }

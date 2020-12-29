@@ -94,7 +94,13 @@ class Session {
      * @return Session|null
      */
     public function getOpponentPlayer(): ?Session {
-        return Duels::getSessionFactory()->getSessionPlayerNullable($this->getOpponentName());
+        $opponent = Server::getInstance()->getPlayerExact($this->getOpponentName());
+
+        if ($opponent == null) {
+            return null;
+        }
+
+        return Duels::getSessionFactory()->getSessionPlayerNullable($opponent);
     }
 
     /**

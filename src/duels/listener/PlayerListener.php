@@ -42,7 +42,7 @@ class PlayerListener implements Listener {
 
         if (!$player instanceof Player) return;
 
-        $session = Duels::getSessionFactory()->getSessionPlayerNullable($player->getName());
+        $session = Duels::getSessionFactory()->getSessionPlayerNullable($player);
 
         if ($session == null) return;
 

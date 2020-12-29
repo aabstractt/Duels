@@ -48,7 +48,7 @@ class SessionFactory {
      * @return Session
      */
     public function getSessionPlayer(Player $player): Session {
-        $session = $this->sessions[strtolower($player->getName())] ?? null;
+        $session = $this->getSessionPlayerNullable($player);
 
         if ($session == null) {
             throw new SessionException('Invalid session for ' . $player->getName());
@@ -58,11 +58,11 @@ class SessionFactory {
     }
 
     /**
-     * @param string $name
+     * @param Player $player
      * @return Session|null
      */
-    public function getSessionPlayerNullable(string $name): ?Session {
-        return $this->sessions[strtolower($name)] ?? null;
+    public function getSessionPlayerNullable(Player $player): ?Session {
+        return $this->sessions[strtolower($player->getName())] ?? null;
     }
 
     /**
