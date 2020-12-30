@@ -266,7 +266,7 @@ class Session {
 
         if ($level == null) $level = $arena->getWorldNonNull();
 
-        return $level->getFolderName() == $arena->getWorldName() || $level->getFolderName() == 'Match-' . $arena->getId();
+        return $level->getFolderName() == $arena->getWorldName();
     }
 
     /**
@@ -418,7 +418,7 @@ class Session {
             return;
         }
 
-        if (!$this->isSpectator()) Duels::getArenaFactory()->handlePlayerDeath($this, $this->getLastKiller());
+        if (!$this->isSpectator() && $arena->isStarted()) Duels::getArenaFactory()->handlePlayerDeath($this, $this->getLastKiller());
 
         $this->setArena();
 
