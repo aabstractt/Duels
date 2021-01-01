@@ -8,7 +8,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\utils\TextFormat;
 
-class Command extends \pocketmine\command\Command {
+abstract class Command extends \pocketmine\command\Command {
 
     /** @var array<string, SubCommand> */
     private $commands = [];

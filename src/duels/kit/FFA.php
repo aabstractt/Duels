@@ -50,7 +50,7 @@ class FFA {
             $killerSession->getGeneralPlayer()->setHealth($killerSession->getGeneralPlayer()->getMaxHealth());
         }
 
-        $session->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
+        $session->teleport(Duels::getDefaultLevelNonNull()->getSafeSpawn());
 
         $session->setDefaultLobbyAttributes();
 
