@@ -374,6 +374,8 @@ class Session {
         if ($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() || !$this->lobbyItemsEnabled) return;
 
         $instance->getInventory()->setContents(ItemUtils::getLobbyItems());
+
+        $this->setEnergized(false);
     }
 
     public function setResetPlayerAttributes(): void {
