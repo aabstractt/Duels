@@ -29,6 +29,13 @@ class FFA {
     }
 
     /**
+     * @return Kit
+     */
+    public function getKit(): Kit {
+        return $this->kit;
+    }
+
+    /**
      * @param Session $session
      * @param Session|null $killerSession
      */

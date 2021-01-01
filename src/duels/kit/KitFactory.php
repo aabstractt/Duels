@@ -102,6 +102,13 @@ class KitFactory {
     }
 
     /**
+     * @return FFA[]
+     */
+    public function getKitsFFA(): array {
+        return $this->ffa;
+    }
+
+    /**
      * @param string $kitName
      * @return FFA|null
      */
