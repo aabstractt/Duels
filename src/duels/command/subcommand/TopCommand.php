@@ -6,8 +6,10 @@ namespace duels\command\subcommand;
 
 use duels\api\PlayerSubCommand;
 use duels\Duels;
-use duels\math\GameLocation;
 use duels\session\Session;
+use duels\utils\LeaderboardEntity;
+use Exception;
+use pocketmine\level\LevelException;
 use pocketmine\utils\TextFormat;
 
 class TopCommand extends PlayerSubCommand {
@@ -17,11 +19,44 @@ class TopCommand extends PlayerSubCommand {
      * @param array $args
      */
     public function onRun(Session $session, array $args): void {
-        $config = Duels::getInstance()->getConfig();
+        $instance = $session->getGeneralPlayer();
 
-        $config->set('entity-leaderboard', array_merge(GameLocation::toArray($session->getGeneralPlayer()->asLocation()), ['username' => $session->getName()]));
-        $config->save();
+        foreach ($instance->getLevelNonNull()->getEntities() as $entity) {
+            if (!$entity instanceof LeaderboardEntity) continue;
 
-        $session->sendMessage(TextFormat::GREEN . 'Successfully created Leaderboard');
+            $entity->close();
+        }
+
+        $nbt = LeaderboardEntity::createBaseNBT($instance->asVector3(), null, $instance->yaw, $instance->pitch);
+
+        $nbt->setTag(clone $instance->namedtag->getTag('Skin'));
+
+        $entity = LeaderboardEntity::createEntity('LeaderboardEntity', $instance->getLevelNonNull(), $nbt);
+
+        if ($entity == null) {
+            throw new LevelException('Entity not found');
+        }
+
+        $entity->setScale(0.1);
+
+        try {
+            $text = '&e&l>&r&4 Leaderboard &e&l <';
+
+            $leaderboard = Duels::getInstance()->getProvider()->getLeaderboard();
+
+            if (empty($leaderboard)) $text .= TextFormat::RED . 'Empty';
+
+            foreach ($leaderboard as $i => $targetOffline) {
+                $text .= "\n&r&l&6#" . ($i + 1) . ' &r&b' . $targetOffline->getName() . '&f - &e' . $targetOffline->getWins();
+            }
+
+            $entity->setNameTag(TextFormat::colorize($text));
+
+            $session->sendMessage(TextFormat::GREEN . 'Successfully created Leaderboard');
+        } catch (Exception $e) {
+            $session->sendMessage($e->getMessage());
+
+            Duels::getInstance()->getLogger()->logException($e);
+        }
     }
 }

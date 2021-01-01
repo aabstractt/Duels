@@ -8,7 +8,6 @@ use duels\Duels;
 use duels\listener\BlockListener;
 use duels\listener\EntityListener;
 use duels\listener\InventoryListener;
-use duels\listener\LevelListener;
 use duels\listener\PlayerInteractListener;
 use duels\listener\PlayerListener;
 use Exception;
@@ -28,8 +27,7 @@ class SessionFactory {
             new PlayerListener(),
             new EntityListener(),
             new BlockListener(),
-            new InventoryListener(),
-            new LevelListener()
+            new InventoryListener()
         );
     }
 

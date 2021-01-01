@@ -14,7 +14,7 @@ class TargetOffline {
      * @param array $data
      */
     public function __construct(array $data) {
-        if (!isset($data['gamesPlayed'])) {
+        if (!isset($data['losses'])) {
             $data = [
                 'username' => $data['username'],
                 'wins' => 0,
