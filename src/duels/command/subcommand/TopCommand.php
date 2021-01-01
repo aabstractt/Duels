@@ -29,7 +29,11 @@ class TopCommand extends PlayerSubCommand {
 
         $nbt = LeaderboardEntity::createBaseNBT($instance->asVector3(), null, $instance->yaw, $instance->pitch);
 
-        $nbt->setTag(clone $instance->namedtag->getTag('Skin'));
+        $tag = $instance->namedtag->getTag('Skin');
+
+        if ($tag === null) return;
+
+        $nbt->setTag(clone $tag);
 
         $entity = LeaderboardEntity::createEntity('LeaderboardEntity', $instance->getLevelNonNull(), $nbt);
 
