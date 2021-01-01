@@ -40,6 +40,7 @@ class KitFactory {
         }
 
         Server::getInstance()->getLogger()->info(TextFormat::AQUA . 'Duels: ' . count($this->kits) . ' kit(s) loaded.');
+        Server::getInstance()->getLogger()->info(TextFormat::AQUA . 'Duels: ' . count($this->ffa) . ' ffa map(s) loaded.');
     }
 
     /**
@@ -176,6 +177,6 @@ class KitFactory {
      * @return bool
      */
     public function isFFA(string $kitName): bool {
-        return strpos($kitName, 'ffa_') !== false;
+        return strpos(strtolower($kitName), 'ffa_') !== false;
     }
 }

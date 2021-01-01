@@ -11,7 +11,7 @@ queue-premium-enabled: true
 
 # FFA Worlds
 ffa-worlds:
-  ffa_sg: FFA_SG
+  FFA_SG: FFA_SG
 
 # Button text of the kits
 placeHolders:

@@ -51,7 +51,7 @@ class JoinFFACommand extends PlayerSubCommand {
         foreach ($fkits as $ffa) {
             $text = $placeHolders[$ffa->getKit()->getName()] ?? '';
 
-            $data['buttons'][] = TextFormat::colorize(str_replace('{0}', (string)count($ffa->getWorld()->getPlayers()), $text));
+            $data['buttons'][] = ['text' => TextFormat::colorize(str_replace('{0}', (string)count($ffa->getWorld()->getPlayers()), $text))];
         }
 
         $session->sendForm(function (Session $session, ?int $data) use($fkits): void {
