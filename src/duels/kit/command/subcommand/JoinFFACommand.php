@@ -16,6 +16,8 @@ class JoinFFACommand extends PlayerSubCommand {
      * @param array $args
      */
     public function onRun(Session $session, array $args): void {
+        if ($session->inArena()) return;
+
         if (empty($args[0])) {
             $this->handleForm($session);
 

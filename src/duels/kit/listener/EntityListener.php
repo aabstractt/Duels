@@ -7,6 +7,7 @@ namespace duels\kit\listener;
 use duels\Duels;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\Listener;
 use pocketmine\Player;
 
@@ -47,5 +48,28 @@ class EntityListener implements Listener {
         $ffa->handlePlayerDeath($session, $session->getLastKiller());
 
         $ev->setCancelled();
+    }
+
+    /**
+     * @param EntityLevelChangeEvent $ev
+     *
+     * @priority HIGHEST
+     */
+    public function onEntityLevelChangeEvent(EntityLevelChangeEvent $ev): void {
+        $entity = $ev->getEntity();
+
+        if (!$entity instanceof Player) return;
+
+        $session = Duels::getSessionFactory()->getSessionPlayerNullable($entity);
+
+        if ($session == null) return;
+
+        if ($session->inArena()) return;
+
+        $ffa = Duels::getKitFactory()->getFFAByWorld($ev->getOrigin());
+
+        if ($ffa == null) return;
+
+        $session->setDefaultLobbyAttributes();
     }
 }

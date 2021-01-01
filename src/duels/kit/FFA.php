@@ -50,17 +50,17 @@ class FFA {
             $killerSession->getGeneralPlayer()->setHealth($killerSession->getGeneralPlayer()->getMaxHealth());
         }
 
-        $session->teleport(Duels::getDefaultLevelNonNull()->getSafeSpawn());
-
-        $session->setDefaultLobbyAttributes();
-
         $this->broadcastMessage($message);
+
+        $session->teleport(Duels::getDefaultLevelNonNull()->getSafeSpawn());
     }
 
     /**
      * @param Session $session
      */
     public function join(Session $session): void {
+        Duels::getQueueFactory()->removeSessionFromQueue($session);
+
         $session->teleport($this->getWorld()->getSpawnLocation());
 
         $session->setDefaultLobbyAttributes();
