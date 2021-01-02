@@ -22,6 +22,8 @@ class BlockListener implements Listener {
         $session = Duels::getSessionFactory()->getSessionPlayer($player);
 
         if (!$session->inFFA()) return;
+		
+		if ($player->isCreative()) return;
 
         $ev->setCancelled();
     }
@@ -37,6 +39,8 @@ class BlockListener implements Listener {
         $session = Duels::getSessionFactory()->getSessionPlayer($player);
 
         if (!$session->inFFA()) return;
+		
+		if ($player->isCreative()) return;
 
         $ev->setCancelled();
     }
