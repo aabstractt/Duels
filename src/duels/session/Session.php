@@ -279,6 +279,13 @@ class Session {
     /**
      * @return bool
      */
+    public function inFFA(): bool {
+        return Duels::getKitFactory()->getFFAByWorld($this->getLevelNonNull()) !== null;
+    }
+
+    /**
+     * @return bool
+     */
     public function isConnected(): bool {
         return Server::getInstance()->getPlayerExact($this->getName()) !== null;
     }
@@ -352,8 +359,9 @@ class Session {
 
     /**
      * Give the default attributes in the lobby or when join a game
+     * @param bool $force
      */
-    public function setDefaultLobbyAttributes(): void {
+    public function setDefaultLobbyAttributes(bool $force = false): void {
         $instance = $this->getGeneralPlayer();
 
         $instance->getInventory()->clearAll();
@@ -371,7 +379,7 @@ class Session {
 
         $this->setImmobile(false);
 
-        if ($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() || !$this->lobbyItemsEnabled) return;
+        if (($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() && !$force) || !$this->lobbyItemsEnabled) return;
 
         $instance->getInventory()->setContents(ItemUtils::getLobbyItems());
 

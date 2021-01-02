@@ -60,7 +60,7 @@ class DuelCommand extends Command {
 
         $sessionTarget = Duels::getSessionFactory()->getSessionPlayer($target);
 
-        if ($sessionTarget->inArena()) {
+        if ($sessionTarget->inArena() || $sessionTarget->inFFA()) {
             $sender->sendMessage(TextFormat::RED . 'The player is already in an arena');
 
             return;
@@ -68,7 +68,7 @@ class DuelCommand extends Command {
 
         $session = Duels::getSessionFactory()->getSessionPlayer($sender);
 
-        if ($session->inArena()) {
+        if ($session->inArena() || $session->inFFA()) {
             $sender->sendMessage(TextFormat::RED . 'You are already in an arena');
 
             return;
@@ -99,8 +99,7 @@ class DuelCommand extends Command {
             $sessionTarget->sendForm(function (Session $sessionTarget, ?bool $data) use($session, $queue): void {
                 if ($data === null) $data = false;
 
-                if ($session->inArena()) $data = false;
-                if ($sessionTarget->inArena()) $data = false;
+                if (($session->inArena() || $session->inFFA()) || ($sessionTarget->inArena() || $sessionTarget->inFFA())) $data = false;
 
                 if ($data) {
                     Duels::getArenaFactory()->createArena([$session, $sessionTarget], $queue->isPremium(), $queue->getKit());

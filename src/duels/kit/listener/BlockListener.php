@@ -19,7 +19,9 @@ class BlockListener implements Listener {
     public function onBlockBreakEvent(BlockBreakEvent $ev): void {
         $player = $ev->getPlayer();
 
-        if (Duels::getKitFactory()->getFFAByWorld($player->getLevelNonNull()) == null) return;
+        $session = Duels::getSessionFactory()->getSessionPlayer($player);
+
+        if (!$session->inFFA()) return;
 
         $ev->setCancelled();
     }
@@ -32,7 +34,9 @@ class BlockListener implements Listener {
     public function onBlockPlaceEvent(BlockPlaceEvent $ev): void {
         $player = $ev->getPlayer();
 
-        if (Duels::getKitFactory()->getFFAByWorld($player->getLevelNonNull()) == null) return;
+        $session = Duels::getSessionFactory()->getSessionPlayer($player);
+
+        if (!$session->inFFA()) return;
 
         $ev->setCancelled();
     }

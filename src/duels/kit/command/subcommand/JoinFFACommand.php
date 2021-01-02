@@ -16,7 +16,11 @@ class JoinFFACommand extends PlayerSubCommand {
      * @param array $args
      */
     public function onRun(Session $session, array $args): void {
-        if ($session->inArena()) return;
+        if ($session->inArena() || $session->inFFA()) {
+            $session->sendMessage(TextFormat::RED . 'You are already in an arena');
+
+            return;
+        }
 
         if (empty($args[0])) {
             $this->handleForm($session);

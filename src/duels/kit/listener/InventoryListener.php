@@ -19,7 +19,9 @@ class InventoryListener implements Listener {
     public function onPlayerDropItemEvent(PlayerDropItemEvent $ev): void {
         $player = $ev->getPlayer();
 
-        if (Duels::getKitFactory()->getFFAByWorld($player->getLevelNonNull()) == null) return;
+        $session = Duels::getSessionFactory()->getSessionPlayer($player);
+
+        if (!$session->inFFA()) return;
 
         $ev->setCancelled();
     }

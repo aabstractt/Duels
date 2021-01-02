@@ -16,6 +16,12 @@ class JoinCommand extends PlayerSubCommand {
      * @param array $args
      */
     public function onRun(Session $session, array $args): void {
+        if ($session->inArena() || $session->inFFA()) {
+            $session->sendMessage(TextFormat::RED . 'You are already in an arena');
+
+            return;
+        }
+
         if (!isset($args[0], $args[1])) {
             $session->sendMessage(TextFormat::RED . 'Usage: /queue ' . $this->getName() . ' <kit> <ranked/unranked>');
 

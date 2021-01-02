@@ -66,10 +66,8 @@ class EntityListener implements Listener {
 
         if ($session->inArena()) return;
 
-        $ffa = Duels::getKitFactory()->getFFAByWorld($ev->getOrigin());
+        if (!$session->inFFA()) return;
 
-        if ($ffa == null) return;
-
-        $session->setDefaultLobbyAttributes();
+        $session->setDefaultLobbyAttributes($ev->getTarget() === Duels::getDefaultLevelNonNull());
     }
 }
