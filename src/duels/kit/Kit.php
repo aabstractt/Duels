@@ -34,6 +34,13 @@ class Kit {
     }
 
     /**
+     * @return bool
+     */
+    public function canBuild(): bool {
+        return $this->data['canBuild'] ?? false;
+    }
+
+    /**
      * @return array
      */
     public function getData(): array {

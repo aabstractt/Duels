@@ -25,7 +25,7 @@ class BlockListener implements Listener {
 
         if ($arena == null) return;
 
-        if ($arena->isStarted()) return;
+        if ($arena->isStarted() && $arena->getLevel()->getKit()->canBuild()) return;
 
         $ev->setCancelled();
     }
@@ -44,7 +44,7 @@ class BlockListener implements Listener {
 
         if ($arena == null) return;
 
-        if ($arena->isStarted()) return;
+        if ($arena->isStarted() && $arena->getLevel()->getKit()->canBuild()) return;
 
         $ev->setCancelled();
     }

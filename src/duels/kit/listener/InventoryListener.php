@@ -23,6 +23,8 @@ class InventoryListener implements Listener {
 
         if (!$session->inFFA()) return;
 
+        if ($player->isCreative()) return;
+
         $ev->setCancelled();
     }
 }
