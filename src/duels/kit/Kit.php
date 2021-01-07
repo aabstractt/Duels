@@ -37,7 +37,7 @@ class Kit {
      * @return bool
      */
     public function canBuild(): bool {
-        return $this->data['canBuild'] ?? false;
+        return (bool) $this->data['canBuild'] ?? false;
     }
 
     /**
