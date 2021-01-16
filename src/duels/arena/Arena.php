@@ -247,7 +247,7 @@ class Arena extends TaskHandlerStorage {
                 4 => '&4Map: &c' . $this->level->getFolderName(),
                 3 => '&4Kit: &c' . $this->level->getKit()->getName(),
                 2 => '',
-                1 => '&cplay.demonic.uk.to'
+                1 => '&cdemonic.ml'
             ], $session);
 
             $session->setDefaultLobbyAttributes();
