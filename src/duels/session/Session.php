@@ -74,13 +74,20 @@ class Session {
      * @return Player
      */
     public function getGeneralPlayer(): Player {
-        $player = Server::getInstance()->getPlayerExact($this->getName());
+        $player = $this->getGeneralPlayerNullable();
 
         if ($player == null) {
             throw new PluginException('Player not was found');
         }
 
         return $player;
+    }
+
+    /**
+     * @return Player|null
+     */
+    public function getGeneralPlayerNullable(): ?Player {
+        return Server::getInstance()->getPlayerExact($this->getName());
     }
 
     /**
@@ -407,7 +414,11 @@ class Session {
 
         $this->targetOffline->increaseWins();
 
-        $arena->broadcastMessage('&c' . $this->getName() . ' &fwon the &c' . $arena->getLevel()->getKit()->getName() . '&4 duel!');
+        foreach ($arena->getAllPlayers() as $player) {
+            if ($player->getGeneralPlayerNullable() == null) continue;
+
+            $player->sendMessage('&c' . $this->getName() . ' &fwon the &c' . $arena->getLevel()->getKit()->getName() . '&4 duel!');
+        }
     }
 
     /**
