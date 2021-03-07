@@ -98,19 +98,6 @@ class Session {
     }
 
     /**
-     * @return Session|null
-     */
-    public function getOpponentPlayer(): ?Session {
-        $opponent = Server::getInstance()->getPlayerExact($this->getOpponentName());
-
-        if ($opponent == null) {
-            return null;
-        }
-
-        return Duels::getSessionFactory()->getSessionPlayerNullable($opponent);
-    }
-
-    /**
      * @return Level
      */
     public function getLevelNonNull(): Level {
@@ -249,20 +236,6 @@ class Session {
     }
 
     /**
-     * @param bool $value
-     */
-    public function setImmobile(bool $value = true): void {
-        $this->getGeneralPlayer()->setImmobile($value);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isImmobile(): bool {
-        return $this->getGeneralPlayer()->isImmobile();
-    }
-
-    /**
      * @param Level|null $level
      * @return bool
      */
@@ -384,7 +357,7 @@ class Session {
 
         $instance->setGamemode($instance::SURVIVAL);
 
-        $this->setImmobile(false);
+        $this->getGeneralPlayer()->setImmobile(false);
 
         if (($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() && !$force) || !$this->lobbyItemsEnabled) return;
 

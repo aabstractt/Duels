@@ -182,7 +182,7 @@ class Arena extends TaskHandlerStorage {
         $this->broadcastMessage('&aThe match has started, good luck!');
 
         foreach ($this->sessions as $session) {
-            $session->setImmobile(false);
+            $session->getGeneralPlayer()->setImmobile(false);
 
             $session->setEnergized(strtolower($this->level->getKitName()) == 'sumo');
         }
@@ -258,7 +258,7 @@ class Arena extends TaskHandlerStorage {
 
             $this->level->getKit()->giveKit($session);
 
-            $session->setImmobile();
+            $session->getGeneralPlayer()->setImmobile();
         }
     }
 
