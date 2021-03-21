@@ -24,7 +24,7 @@ class Scoreboard {
     public const ASCENDING = 0;
     public const DESCENDING = 1;
 
-    /** @var Arena */
+    /** @var Arena|null */
     private $arena;
     /** @var string */
     public $displayName;
