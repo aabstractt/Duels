@@ -14,6 +14,7 @@ use duels\provider\MysqlProvider;
 use duels\queue\Queue;
 use duels\queue\QueueFactory;
 use duels\session\SessionFactory;
+use duels\translation\Translation;
 use duels\utils\LeaderboardEntity;
 use duels\utils\Scoreboard;
 use Exception;
@@ -147,6 +148,8 @@ class Duels extends PluginBase {
         if (file_exists($this->getDataFolder() . 'levels.json')) {
             self::$levelFactory->init();
         }
+
+        Translation::getInstance()->init();
 
         self::$arenaFactory = new ArenaFactory();
 

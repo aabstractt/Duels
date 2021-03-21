@@ -1,0 +1,9 @@
+LOBBY_SCOREBORD:
+  - "---------"
+  - "Online: {%0}"
+  - "Fighting: {%1}"
+  - "--------- "
+QUEUE_SCOREBOARD:
+  - "In Queue"
+  - "- {%0} ({%1})"
+  - "---------  "

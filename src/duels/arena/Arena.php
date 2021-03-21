@@ -204,7 +204,6 @@ class Arena extends TaskHandlerStorage {
         $session->setArena($this);
 
         Duels::getDefaultScoreboard()->removePlayer($session);
-        $this->getScoreboard()->addPlayer($session);
 
         Duels::getDuelFactory()->removeDuels($session->getName());
     }

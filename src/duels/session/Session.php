@@ -9,6 +9,7 @@ use duels\arena\Arena;
 use duels\Duels;
 use duels\math\GameVector3;
 use duels\provider\TargetOffline;
+use duels\translation\Translation;
 use duels\utils\ItemUtils;
 use Exception;
 use pocketmine\level\Level;
@@ -436,17 +437,18 @@ class Session {
 
         if ($this->getLevelNonNull() !== Duels::getDefaultLevelNonNull()) return;
 
-        $data = [
-            '---------',
-            'Online: ' . count(Server::getInstance()->getOnlinePlayers()),
-            'Fighting: 0',
-            '--------- '
-        ];
+        $data = Translation::getInstance()->translateArray('LOBBY_SCOREBOARD', [
+            count(Server::getInstance()->getOnlinePlayers()),
+            10
+        ]);
 
         $queue = Duels::getQueueFactory()->getSessionQueue($this);
 
         if ($queue != null) {
-            $data = array_merge($data, ['In Queue', '- ' . $queue->getKit()->getName(), '---------  ']);
+            $data = array_merge($data, Translation::getInstance()->translateArray('QUEUE_SCOREBOARD', [
+                $queue->getKit()->getName(),
+                $queue->isPremium() ? 'Ranked' : 'UnRanked'
+            ]));
         }
 
         Duels::getDefaultScoreboard()->setLines($data);
