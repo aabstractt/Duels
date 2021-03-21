@@ -1,4 +1,4 @@
-LOBBY_SCOREBORD:
+LOBBY_SCOREBOARD:
   - "---------"
   - "Online: {%0}"
   - "Fighting: {%1}"

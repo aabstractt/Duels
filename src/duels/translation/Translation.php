@@ -36,7 +36,7 @@ class Translation {
 
         foreach (array_keys($text) as $t) {
             foreach ($args as $i => $arg) {
-                $text[$t] = TextFormat::colorize(str_replace('{' . $i . '}', $arg, $text[$t]));
+                $text[$t] = TextFormat::colorize(str_replace('{%' . $i . '}', $arg, $text[$t]));
             }
         }
 
