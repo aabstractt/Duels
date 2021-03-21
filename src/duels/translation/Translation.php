@@ -14,12 +14,12 @@ class Translation {
     use InstancePluginReference;
 
     /** @var array */
-    private array $translations = [];
+    private $translations = [];
 
     public function init(): void {
-        Duels::getInstance()->saveResource('translations.yml');
+        Duels::getInstance()->saveResource('scoreboard.yml');
 
-        $this->translations = (new Config(Duels::getInstance()->getDataFolder() . 'translations.yml'))->getAll();
+        $this->translations = (new Config(Duels::getInstance()->getDataFolder() . 'scoreboard.yml'))->getAll();
     }
 
     /**
