@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\utils;
 
 use duels\arena\Arena;
+use duels\Duels;
 use duels\session\Session;
 use pocketmine\network\mcpe\protocol\DataPacket;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
@@ -36,12 +37,12 @@ class Scoreboard {
 
     /**
      * Scoreboard constructor.
-     * @param Arena $arena
+     * @param Arena|null $arena
      * @param string $title
      * @param string $displaySlot
      * @param int $sortOrder
      */
-    public function __construct(Arena $arena, string $title, string $displaySlot, int $sortOrder = self::DESCENDING) {
+    public function __construct(?Arena $arena, string $title, string $displaySlot, int $sortOrder = self::DESCENDING) {
         $this->arena = $arena;
 
         $this->displayName = $title;
@@ -57,7 +58,7 @@ class Scoreboard {
      * @param Session|null $session
      */
     public function removePlayer(Session $session = null): void {
-        $players = [];
+        $players = $this->arena == null ? Duels::getSessionFactory()->getDefaultSessions() : $this->arena->getAllPlayers();
 
         if ($session !== null) $players = [$session];
 
@@ -74,7 +75,7 @@ class Scoreboard {
      * @param Session|null $session
      */
     public function addPlayer(Session $session = null): void {
-        $players = $this->arena->getAllPlayers();
+        $players = $this->arena == null ? Duels::getSessionFactory()->getDefaultSessions() : $this->arena->getAllPlayers();
 
         if ($session !== null) $players = [$session];
 
@@ -109,7 +110,7 @@ class Scoreboard {
      * @param Session|null $session
      */
     public function setLines(array $lines, ?Session $session = null): void {
-        $players = $this->arena->getAllPlayers();
+        $players = $this->arena == null ? Duels::getSessionFactory()->getDefaultSessions() : $this->arena->getAllPlayers();
 
         if ($session !== null) $players = [$session];
 

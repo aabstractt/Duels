@@ -364,6 +364,8 @@ class Session {
         $instance->getInventory()->setContents(ItemUtils::getLobbyItems());
 
         $this->setEnergized(false);
+
+        Duels::getDefaultScoreboard()->addPlayer($this);
     }
 
     public function setResetPlayerAttributes(): void {
@@ -427,5 +429,26 @@ class Session {
 
             $this->getGeneralPlayer()->kick($e->getMessage());
         }
+    }
+
+    public function updateScoreboard(): void {
+        if (!$this->isConnected()) return;
+
+        if ($this->getLevelNonNull() !== Duels::getDefaultLevelNonNull()) return;
+
+        $data = [
+            '---------',
+            'Online: ' . count(Server::getInstance()->getOnlinePlayers()),
+            'Fighting: 0',
+            '--------- '
+        ];
+
+        $queue = Duels::getQueueFactory()->getSessionQueue($this);
+
+        if ($queue != null) {
+            $data = array_merge($data, ['In Queue', '- ' . $queue->getKit()->getName(), '---------  ']);
+        }
+
+        Duels::getDefaultScoreboard()->setLines($data);
     }
 }

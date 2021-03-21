@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace duels\arena;
 
 use duels\arena\task\GameCountDownUpdateTask;
@@ -8,7 +10,6 @@ use duels\asyncio\FileCopyAsyncTask;
 use duels\Duels;
 use duels\session\Session;
 use duels\task\TaskHandlerStorage;
-use duels\utils\BossBar;
 use duels\utils\Scoreboard;
 use duels\arena\task\GameFinishUpdateTask;
 use pocketmine\level\Level as pocketLevel;
@@ -37,8 +38,6 @@ class Arena extends TaskHandlerStorage {
     protected $status = self::STATUS_WAITING;
     /** @var Scoreboard */
     protected $scoreboard;
-    /** @var BossBar|null */
-    protected $bossbar = null;
 
     /**
      * Arena constructor.
@@ -126,13 +125,6 @@ class Arena extends TaskHandlerStorage {
     }
 
     /**
-     * @return BossBar|null
-     */
-    public function getBossbar(): ?BossBar {
-        return $this->bossbar;
-    }
-
-    /**
      * @return int
      */
     public function getStatus(): int {
@@ -211,6 +203,7 @@ class Arena extends TaskHandlerStorage {
 
         $session->setArena($this);
 
+        Duels::getDefaultScoreboard()->removePlayer($session);
         $this->getScoreboard()->addPlayer($session);
 
         Duels::getDuelFactory()->removeDuels($session->getName());
@@ -236,6 +229,11 @@ class Arena extends TaskHandlerStorage {
 
             $session->setEnergized();
 
+            $session->setSlot($slot++);
+
+            $session->teleport($this->level->getSlotPosition($session->getSlot(), $this->getWorldNonNull()));
+
+            $this->scoreboard->addPlayer($session);
             $this->scoreboard->setLines([
                 11 => '&7' . date('d/m/y') . ' &8Match-' . $this->getId(),
                 10 => '',
@@ -251,10 +249,6 @@ class Arena extends TaskHandlerStorage {
             ], $session);
 
             $session->setDefaultLobbyAttributes();
-
-            $session->setSlot($slot++);
-
-            $session->teleport($this->level->getSlotPosition($session->getSlot(), $this->getWorldNonNull()));
 
             $this->level->getKit()->giveKit($session);
 

@@ -64,6 +64,25 @@ class SessionFactory {
     }
 
     /**
+     * @return Session[]
+     */
+    public function getDefaultSessions(): array {
+        $sessions = [];
+
+        foreach ($this->sessions as $session) {
+            $instance = $session->getGeneralPlayerNullable();
+
+            if ($instance == null) continue;
+
+            if ($instance->getLevelNonNull() === Duels::getDefaultLevelNonNull()) {
+                $sessions[] = $session;
+            }
+        }
+
+        return $sessions;
+    }
+
+    /**
      * @param Player $player
      */
     public function removeSession(Player $player): void {

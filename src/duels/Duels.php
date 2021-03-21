@@ -15,11 +15,13 @@ use duels\queue\Queue;
 use duels\queue\QueueFactory;
 use duels\session\SessionFactory;
 use duels\utils\LeaderboardEntity;
+use duels\utils\Scoreboard;
 use Exception;
 use pocketmine\event\Listener;
 use pocketmine\level\Level as pocketLevel;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginException;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
@@ -39,6 +41,8 @@ class Duels extends PluginBase {
     private static $kitFactory;
     /** @var DuelFactory */
     private static $duelFactory;
+    /** @var Scoreboard */
+    private static $scoreboard;
     /** @var MysqlProvider */
     private $provider;
 
@@ -89,6 +93,13 @@ class Duels extends PluginBase {
      */
     public static function getDuelFactory(): DuelFactory {
         return self::$duelFactory;
+    }
+
+    /**
+     * @return Scoreboard
+     */
+    public static function getDefaultScoreboard(): Scoreboard {
+        return self::$scoreboard;
     }
 
     /**
@@ -143,9 +154,17 @@ class Duels extends PluginBase {
 
         self::$duelFactory = new DuelFactory();
 
+        self::$scoreboard = new Scoreboard(null, 'Practice', Scoreboard::SIDEBAR, Scoreboard::ASCENDING);
+
         $this->getServer()->getCommandMap()->register(ConfigCommand::class, new ConfigCommand());
 
         LeaderboardEntity::registerEntity(LeaderboardEntity::class, true);
+
+        $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
+            foreach ($this::getSessionFactory()->getDefaultSessions() as $session) {
+                $session->updateScoreboard();
+            }
+        }), 20);
     }
 
     /**
