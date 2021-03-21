@@ -130,6 +130,19 @@ class ArenaFactory {
     }
 
     /**
+     * @return array<string, Session>
+     */
+    public function getSessionsPlaying(): array {
+        $sessions = [];
+
+        foreach ($this->arenas as $arena) {
+            $sessions = array_merge($sessions, $arena->getSessions());
+        }
+
+        return $sessions;
+    }
+
+    /**
      * @param Session $session
      * @param Session|null $killerSession
      */

@@ -439,7 +439,7 @@ class Session {
 
         $data = Translation::getInstance()->translateArray('LOBBY_SCOREBOARD', [
             count(Server::getInstance()->getOnlinePlayers()),
-            10
+            count(Duels::getArenaFactory()->getSessionsPlaying())
         ]);
 
         $queue = Duels::getQueueFactory()->getSessionQueue($this);
