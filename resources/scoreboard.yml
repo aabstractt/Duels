@@ -7,3 +7,21 @@ QUEUE_SCOREBOARD:
   - "In Queue"
   - "- {%0} ({%1})"
   - "---------  "
+
+IN_GAME_SCOREBOARD:
+  11: '&7 {%0} &8Match-{%1}'
+  10: ''
+  9: '&4Starting: &c0'
+  8: ' '
+  7: '&4Opponent:'
+  6: '&c {%2}'
+  5: '  '
+  4: '&4Map: &c{%3}'
+  3: '&4Kit: &c{%4}'
+  2: '   '
+  1: '&cyourip.com'
+
+STARTING_SCOREBOARD_UPDATE:
+  9: '&4Starting: &c{%0}'
+MATCH_SCOREBOARD_UPDATE:
+  9: '&4Time left: &c{%0}'

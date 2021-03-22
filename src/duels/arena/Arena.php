@@ -10,6 +10,7 @@ use duels\asyncio\FileCopyAsyncTask;
 use duels\Duels;
 use duels\session\Session;
 use duels\task\TaskHandlerStorage;
+use duels\translation\Translation;
 use duels\utils\Scoreboard;
 use duels\arena\task\GameFinishUpdateTask;
 use pocketmine\level\Level as pocketLevel;
@@ -233,19 +234,13 @@ class Arena extends TaskHandlerStorage {
             $session->teleport($this->level->getSlotPosition($session->getSlot(), $this->getWorldNonNull()));
 
             $this->scoreboard->addPlayer($session);
-            $this->scoreboard->setLines([
-                11 => '&7' . date('d/m/y') . ' &8Match-' . $this->getId(),
-                10 => '',
-                9 => '&4Starting: &c0',
-                8 => '',
-                7 => '&4Opponent:',
-                6 => '&c' . $session->getOpponentName(),
-                5 => '',
-                4 => '&4Map: &c' . $this->level->getFolderName(),
-                3 => '&4Kit: &c' . $this->level->getKit()->getName(),
-                2 => '',
-                1 => '&cdemonic.ml'
-            ], $session);
+            $this->scoreboard->setLines(Translation::getInstance()->translateArray('IN_GAME_SCOREBOARD', [
+                date('d/m/y'),
+                $this->getId(),
+                $session->getOpponentName(),
+                $this->level->getFolderName(),
+                $this->level->getKit()->getName()
+            ]), $session);
 
             $session->setDefaultLobbyAttributes();
 

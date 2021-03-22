@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\arena\task;
 
 use duels\arena\Arena;
+use duels\translation\Translation;
 
 class GameCountDownUpdateTask extends GameUpdateTask {
     
@@ -58,7 +59,9 @@ class GameCountDownUpdateTask extends GameUpdateTask {
                 return;
             }
 
-            $arena->getScoreboard()->setLine(9, '&4Starting: &c' . $this->countdown);
+            $arena->getScoreboard()->setLines(Translation::getInstance()->translateArray('STARTING_SCOREBOARD_UPDATE', [
+                $this->countdown
+            ]));
 
             $this->countdown--;
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace duels\arena\task;
 
+use duels\translation\Translation;
+
 class GameMatchUpdateTask extends GameUpdateTask {
 
     /** @var int */
@@ -35,7 +37,9 @@ class GameMatchUpdateTask extends GameUpdateTask {
             return;
         }
 
-        $arena->getScoreboard()->setLine(9, '&4Time left: &c' . date('i:s', ((5*60) - $this->timePassed)));
+        $arena->getScoreboard()->setLines(Translation::getInstance()->translateArray('MATCH_SCOREBOARD_UPDATE', [
+            date('i:s', ((5*60) - $this->timePassed))
+        ]));
 
         $this->timePassed++;
     }
