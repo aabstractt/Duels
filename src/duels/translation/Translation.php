@@ -35,10 +35,10 @@ class Translation {
         }
 
         foreach ($args as $i => $arg) {
-            $text = TextFormat::colorize(str_replace('{%' . $i . '}', $arg, $text));
+            $text = str_replace('{%' . $i . '}', $arg, $text);
         }
 
-        return $text;
+        return TextFormat::colorize($text);
     }
 
     /**

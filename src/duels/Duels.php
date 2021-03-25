@@ -8,6 +8,7 @@ use duels\arena\Arena;
 use duels\arena\Level;
 use duels\asyncio\FileDeleteAsyncTask;
 use duels\command\ConfigCommand;
+use duels\command\LeaveCommand;
 use duels\duel\DuelFactory;
 use duels\kit\KitFactory;
 use duels\provider\MysqlProvider;
@@ -160,6 +161,7 @@ class Duels extends PluginBase {
         self::$scoreboard = new Scoreboard(null, Translation::getInstance()->translateString('LOBBY_SCOREBOARD_TITLE'), Scoreboard::SIDEBAR, Scoreboard::ASCENDING);
 
         $this->getServer()->getCommandMap()->register(ConfigCommand::class, new ConfigCommand());
+        $this->getServer()->getCommandMap()->register(LeaveCommand::class, new LeaveCommand('leave', 'Go to the lobby'));
 
         LeaderboardEntity::registerEntity(LeaderboardEntity::class, true);
 
