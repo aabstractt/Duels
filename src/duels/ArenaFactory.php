@@ -169,6 +169,10 @@ class ArenaFactory {
 
         $session->remove();
 
+        $instance = $session->getGeneralPlayer();
+
+        if ($instance != null) $instance->extinguish();
+
         $arena->broadcastMessage($message);
     }
 }

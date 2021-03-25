@@ -294,7 +294,7 @@ class Session {
      * @param string $subtitle
      */
     public function sendTitle(string $title, string $subtitle = ''): void {
-        $this->getGeneralPlayer()->addTitle(TextFormat::colorize($title), TextFormat::colorize($subtitle));
+        $this->getGeneralPlayer()->sendTitle(TextFormat::colorize($title), TextFormat::colorize($subtitle));
     }
 
     /**
@@ -359,6 +359,7 @@ class Session {
         $instance->setGamemode($instance::SURVIVAL);
 
         $this->getGeneralPlayer()->setImmobile(false);
+        $this->getGeneralPlayer()->extinguish();
 
         if (($this->getLevelNonNull() !== Server::getInstance()->getDefaultLevel() && !$force) || !$this->lobbyItemsEnabled) return;
 

@@ -52,6 +52,10 @@ class FFA {
 
         $this->broadcastMessage($message);
 
+        $instance = $session->getGeneralPlayer();
+
+        if ($instance != null) $instance->extinguish();
+
         $session->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
     }
 
