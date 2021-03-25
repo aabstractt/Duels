@@ -52,7 +52,7 @@ class FFA {
 
         $this->broadcastMessage($message);
 
-        $session->teleport(Duels::getDefaultLevelNonNull()->getSafeSpawn());
+        $session->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
     }
 
     /**
