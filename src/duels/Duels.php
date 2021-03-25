@@ -154,6 +154,12 @@ class Duels extends PluginBase {
 
         self::$arenaFactory = new ArenaFactory();
 
+        $matches = glob($this->getServer()->getDataPath() . 'worlds/Match-*', GLOB_ONLYDIR);
+
+        if ($matches !== false) {
+            foreach ($matches as $match) FileDeleteAsyncTask::recurse_delete($match);
+        }
+
         self::$sessionFactory = new SessionFactory();
 
         self::$duelFactory = new DuelFactory();
