@@ -11,7 +11,6 @@ use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\Player;
-use pocketmine\Server;
 
 class PlayerListener implements Listener {
 
@@ -24,7 +23,7 @@ class PlayerListener implements Listener {
     public function onPlayerJoinEvent(PlayerJoinEvent $ev): void {
         $player = $ev->getPlayer();
 
-        $player->teleport(Server::getInstance()->getDefaultLevel()->getSpawnLocation());
+        $player->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
 
         try {
             Duels::getSessionFactory()->createSession($player->getName());
