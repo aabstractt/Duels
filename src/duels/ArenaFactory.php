@@ -99,28 +99,6 @@ class ArenaFactory {
     }
 
     /**
-     * @param Session $session
-     * @return Arena|null
-     */
-    public function getArena(Session $session): ?Arena {
-        foreach ($this->arenas as $arena) {
-            if (!$arena->inArenaAsPlayerOrSpectator($session)) continue;
-
-            return $arena;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param int $id
-     * @return Arena|null
-     */
-    public function getArenaId(int $id): ?Arena {
-        return $this->arenas[$id] ?? null;
-    }
-
-    /**
      * @param int $id
      */
     public function removeArena(int $id): void {

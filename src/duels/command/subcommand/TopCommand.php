@@ -41,6 +41,8 @@ class TopCommand extends PlayerSubCommand {
             throw new LevelException('Entity not found');
         }
 
+        $entity->spawnToAll();
+
         $entity->setScale(0.1);
 
         try {

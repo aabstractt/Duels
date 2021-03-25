@@ -9,6 +9,7 @@ use Exception;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\Player;
 
@@ -24,6 +25,8 @@ class PlayerListener implements Listener {
         $player = $ev->getPlayer();
 
         $player->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
+
+        $ev->setJoinMessage('');
 
         try {
             Duels::getSessionFactory()->createSession($player->getName());
@@ -52,12 +55,31 @@ class PlayerListener implements Listener {
     }
 
     /**
+     * @param PlayerMoveEvent $ev
+     *
+     * @priority NORMAL
+     */
+    public function onPlayerMoveEvent(PlayerMoveEvent $ev): void {
+        $player = $ev->getPlayer();
+
+        if (!$player instanceof Player) return;
+
+        if ($player->getLevelNonNull() !== Duels::getDefaultLevelNonNull()) return;
+
+        if ($player->getY() < 7) {
+            $player->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
+        }
+    }
+
+    /**
      * @param PlayerQuitEvent $ev
      *
      * @priority NORMAL
      */
     public function onPlayerQuitEvent(PlayerQuitEvent $ev): void {
         $player = $ev->getPlayer();
+
+        $ev->setQuitMessage('');
 
         Duels::getSessionFactory()->removeSession($player);
     }

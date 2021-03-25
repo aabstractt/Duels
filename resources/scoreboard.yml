@@ -1,4 +1,5 @@
 LOBBY_SCOREBOARD_TITLE: "&a&lLOBBY"
+SCOREBOARD_IN_GAME_TITLE: "&a&lAphatos"
 LOBBY_SCOREBOARD:
   - "---------"
   - "Online: {%0}"

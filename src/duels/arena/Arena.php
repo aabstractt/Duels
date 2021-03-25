@@ -16,7 +16,6 @@ use duels\arena\task\GameFinishUpdateTask;
 use pocketmine\level\Level as pocketLevel;
 use pocketmine\plugin\PluginException;
 use pocketmine\Server;
-use pocketmine\utils\TextFormat;
 
 class Arena extends TaskHandlerStorage {
 
@@ -75,9 +74,7 @@ class Arena extends TaskHandlerStorage {
 
         if (!$scoreboardEnabled) return;
 
-        $this->scoreboard = new Scoreboard($this,
-            TextFormat::DARK_RED . 'Demonic',
-            Scoreboard::SIDEBAR);
+        $this->scoreboard = new Scoreboard($this, Translation::getInstance()->translateString('SCOREBOARD_IN_GAME_TITLE'), Scoreboard::SIDEBAR);
     }
 
     public function bootGame(): void {
