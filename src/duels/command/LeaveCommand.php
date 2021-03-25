@@ -26,6 +26,8 @@ class LeaveCommand extends Command {
         try {
             $session = Duels::getSessionFactory()->getSessionPlayer($sender);
 
+            $session->teleport(Duels::getDefaultLevelNonNull()->getSpawnLocation());
+
             $session->setDefaultLobbyAttributes(true);
 
             $session->sendMessage(TextFormat::GREEN . 'Sending you to the Lobby.');

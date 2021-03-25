@@ -452,6 +452,6 @@ class Session {
             ]));
         }
 
-        Duels::getDefaultScoreboard()->setLines($data);
+        Duels::getDefaultScoreboard()->setLines($data, $this);
     }
 }
