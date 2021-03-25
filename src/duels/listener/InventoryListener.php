@@ -14,11 +14,17 @@ class InventoryListener implements Listener {
     /**
      * @param PlayerDropItemEvent $ev
      *
-     * @priority NORMAL
+     * @priority MONITOR
      * @ignoreCancelled true
      */
     public function onPlayerDropItemEvent(PlayerDropItemEvent $ev): void {
         $player = $ev->getPlayer();
+
+        if ($player->getLevelNonNull() === Duels::getDefaultLevelNonNull() && !$player->isOp()) {
+            $ev->setCancelled();
+
+            return;
+        }
 
         $session = Duels::getSessionFactory()->getSessionPlayer($player);
 

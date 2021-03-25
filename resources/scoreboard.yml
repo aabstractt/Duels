@@ -1,3 +1,4 @@
+LOBBY_SCOREBOARD_TITLE: "&a&lLOBBY"
 LOBBY_SCOREBOARD:
   - "---------"
   - "Online: {%0}"

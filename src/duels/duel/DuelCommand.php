@@ -83,7 +83,7 @@ class DuelCommand extends Command {
 
         $queues = Duels::getQueueFactory()->getQueuesUnranked();
 
-        foreach ($queues as $queue) $data['buttons'][] = ['text' => Duels::translatePlaceHolder($queue)];
+        foreach ($queues as $queue) $data['buttons'][] = Duels::translatePlaceHolder($queue);
 
         $session->sendForm(function (Session $session, ?int $data) use($sessionTarget, $queues): void {
             if ($data === null) return;

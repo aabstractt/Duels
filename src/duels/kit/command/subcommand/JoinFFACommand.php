@@ -52,12 +52,15 @@ class JoinFFACommand extends PlayerSubCommand {
 
         $placeHolders = Duels::getInstance()->getConfig()->get('placeHolders', []);
 
+
         $fkits = Duels::getKitFactory()->getKitsFFA();
 
         foreach ($fkits as $ffa) {
-            $text = $placeHolders[$ffa->getKit()->getName()] ?? '';
+            $data = $placeHolders[$ffa->getKit()->getName()] ?? '';
 
-            $data['buttons'][] = ['text' => TextFormat::colorize(str_replace('{0}', (string)count($ffa->getWorld()->getPlayers()), $text))];
+            $data['text'] = TextFormat::colorize(str_replace('{0}', (string)count($ffa->getWorld()->getPlayers()), $data['text']));
+
+            $data['buttons'][] = $data;
         }
 
         $session->sendForm(function (Session $session, ?int $data) use($fkits): void {

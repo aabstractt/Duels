@@ -16,10 +16,16 @@ class EntityListener implements Listener {
     /**
      * @param EntityDamageEvent $ev
      *
-     * @priority HIGHEST
+     * @priority MONITOR
      */
     public function onEntityDamageEvent(EntityDamageEvent $ev): void {
         $entity = $ev->getEntity();
+
+        if ($entity->getLevelNonNull() === Duels::getDefaultLevelNonNull()) {
+            $ev->setCancelled();
+
+            return;
+        }
 
         if (!$entity instanceof Player) return;
 

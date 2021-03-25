@@ -14,7 +14,7 @@ class BlockListener implements Listener {
     /**
      * @param BlockBreakEvent $ev
      *
-     * @priority MONITOR
+     * @priority NORMAL
      */
     public function onBlockBreakEvent(BlockBreakEvent $ev): void {
         $player = $ev->getPlayer();

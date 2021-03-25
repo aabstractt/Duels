@@ -40,7 +40,7 @@ class ListCommand extends PlayerSubCommand {
             'buttons' => []
         ];
 
-        foreach ($queues as $queue) $data['buttons'][] = ['text' => Duels::translatePlaceHolder($queue)];
+        foreach ($queues as $queue) $data['buttons'][] = Duels::translatePlaceHolder($queue);
 
         $session->sendForm(function (Session $session, ?int $data) use($queues) : void {
             if ($data === null) return;

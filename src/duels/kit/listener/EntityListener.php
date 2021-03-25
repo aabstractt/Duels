@@ -16,7 +16,7 @@ class EntityListener implements Listener {
     /**
      * @param EntityDamageEvent $ev
      *
-     * @priority HIGHEST
+     * @priority NORMAL
      */
     public function onEntityDamageEvent(EntityDamageEvent $ev): void {
         $entity = $ev->getEntity();

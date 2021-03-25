@@ -19,6 +19,12 @@ class BlockListener implements Listener {
     public function onBlockBreakEvent(BlockBreakEvent $ev): void {
         $player = $ev->getPlayer();
 
+        if ($player->getLevelNonNull() === Duels::getDefaultLevelNonNull()) {
+            $ev->setCancelled();
+
+            return;
+        }
+
         $session = Duels::getSessionFactory()->getSessionPlayer($player);
 
         $arena = $session->getArena();
@@ -37,6 +43,12 @@ class BlockListener implements Listener {
      */
     public function onBlockPlaceEvent(BlockPlaceEvent $ev): void {
         $player = $ev->getPlayer();
+
+        if ($player->getLevelNonNull() === Duels::getDefaultLevelNonNull()) {
+            $ev->setCancelled();
+
+            return;
+        }
 
         $session = Duels::getSessionFactory()->getSessionPlayer($player);
 

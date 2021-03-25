@@ -157,7 +157,7 @@ class Duels extends PluginBase {
 
         self::$duelFactory = new DuelFactory();
 
-        self::$scoreboard = new Scoreboard(null, 'Practice', Scoreboard::SIDEBAR, Scoreboard::ASCENDING);
+        self::$scoreboard = new Scoreboard(null, Translation::getInstance()->translateString('LOBBY_SCOREBOARD_TITLE'), Scoreboard::SIDEBAR, Scoreboard::ASCENDING);
 
         $this->getServer()->getCommandMap()->register(ConfigCommand::class, new ConfigCommand());
 
@@ -217,21 +217,23 @@ class Duels extends PluginBase {
     public function addPlaceHolder(string $kitName, string $placeholder): void {
         $config = $this->getConfig();
 
-        $config->set('placeHolders', array_merge($config->get('placeHolders', []), [$kitName => $placeholder]));
+        $config->set('placeHolders', array_merge($config->get('placeHolders', []), [$kitName => ['text' => $placeholder]]));
 
         $config->save();
     }
 
     /**
      * @param Queue $queue
-     * @return string
+     * @return array
      */
-    public static function translatePlaceHolder(Queue $queue): string {
+    public static function translatePlaceHolder(Queue $queue): array {
         $placeHolders = self::$instance->getConfig()->get('placeHolders', []);
 
-        $text = $placeHolders[$queue->getKit()->getName()] ?? '';
+        $data = $placeHolders[$queue->getKit()->getName()] ?? '';
 
-        return TextFormat::colorize(str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitSessions($queue->getKit(), $queue->isPremium()))], $text));
+        $data['text'] = TextFormat::colorize(str_replace(['{0}', '{1}'], [count($queue->getSessions()), count(Duels::getArenaFactory()->getKitSessions($queue->getKit(), $queue->isPremium()))], $data['text']));
+
+        return $data;
     }
 
     /**
