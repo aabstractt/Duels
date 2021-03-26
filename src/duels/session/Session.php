@@ -45,6 +45,10 @@ class Session {
     private $lastAssistanceTime = -1;
     /** @var TargetOffline */
     private $targetOffline;
+    /** @var int */
+    private $tick = 0;
+    /** @var int */
+    private $tickUpdated = 0;
 
     /**
      * Session constructor.
@@ -436,7 +440,13 @@ class Session {
     public function updateScoreboard(): void {
         if (!$this->isConnected()) return;
 
-        if ($this->getLevelNonNull() !== Duels::getDefaultLevelNonNull()) return;
+        if ($this->getLevelNonNull() !== Duels::getDefaultLevelNonNull()) {
+            $this->tick = 0;
+
+            $this->tickUpdated = 0;
+
+            return;
+        }
 
         $data = Translation::getInstance()->translateArray('LOBBY_SCOREBOARD', [
             count(Server::getInstance()->getOnlinePlayers()),
@@ -451,6 +461,8 @@ class Session {
                 $queue->isPremium() ? 'Ranked' : 'UnRanked'
             ]));
         }
+
+        $data = array_merge($data, Translation::getInstance()->translateString('LOBBY_SCOREBOARD_UPDATE_' . ($this->tickUpdated == 0 ? 'TWITTER' : 'DISCORD')));
 
         Duels::getDefaultScoreboard()->setLines($data, $this);
     }

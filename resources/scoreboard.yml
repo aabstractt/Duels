@@ -1,29 +1,36 @@
-LOBBY_SCOREBOARD_TITLE: "&a&lLOBBY"
-SCOREBOARD_IN_GAME_TITLE: "&a&lAphatos"
+LOBBY_SCOREBOARD_TITLE: "&a&lAPATHOS PRACTICE"
+SCOREBOARD_IN_GAME_TITLE: "&a&lAPATHOS PRACTICE"
 LOBBY_SCOREBOARD:
-  - "---------"
-  - "Online: {%0}"
-  - "Fighting: {%1}"
-  - "--------- "
+  - "&8----------------- "
+  - " &l&aLobby"
+  - "  Online: {%0}"
+  - "  Fighting: {%1}"
+  - ""
 QUEUE_SCOREBOARD:
   - "In Queue"
   - "- {%0} ({%1})"
-  - "---------  "
+  - " "
+LOBBY_SCOREBOARD_UPDATE_TWITTER:
+  - "&b&l@AphatosN"
+  - "&8-----------------"
+LOBBY_SCOREBOARD_UPDATE_DISCORD:
+  - "&9&ldiscord.gg/apathos"
+  - "&8-----------------"
 
 IN_GAME_SCOREBOARD:
-  11: '&7 {%0} &8Match-{%1}'
+  11: '&a {%0} &dMatch-{%1}'
   10: ''
-  9: '&4Starting: &c0'
+  9: '&aStarting: &d0'
   8: ' '
-  7: '&4Opponent:'
-  6: '&c {%2}'
+  7: '&aOpponent:'
+  6: '&d {%2}'
   5: '  '
-  4: '&4Map: &c{%3}'
-  3: '&4Kit: &c{%4}'
+  4: '&aMap: &d{%3}'
+  3: '&aKit: &d{%4}'
   2: '   '
-  1: '&cyourip.com'
+  1: '&aplay.apathosn.com'
 
 STARTING_SCOREBOARD_UPDATE:
-  9: '&4Starting: &c{%0}'
+  9: '&aStarting: &d{%0}'
 MATCH_SCOREBOARD_UPDATE:
-  9: '&4Time left: &c{%0}'
+  9: '&aTime left: &d{%0}'
