@@ -443,7 +443,7 @@ class Session {
         if ($this->getLevelNonNull() !== Duels::getDefaultLevelNonNull()) {
             $this->tick = 0;
 
-            $this->tickUpdated = 0;
+            $this->changed = true;
 
             return;
         }

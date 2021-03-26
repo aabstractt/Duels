@@ -26,6 +26,11 @@ class LeaveCommand extends PlayerSubCommand {
 
         $queue->removeSession($session);
 
+        Duels::getDefaultScoreboard()->removePlayer($session);
+        Duels::getDefaultScoreboard()->addPlayer($session);
+
+        $session->updateScoreboard();
+
         $session->sendMessage(TextFormat::RED . 'You left the queue');
     }
 }
