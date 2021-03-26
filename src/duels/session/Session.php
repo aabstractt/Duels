@@ -47,7 +47,7 @@ class Session {
     private $targetOffline;
     /** @var int */
     private $tick = 0;
-    /** @var int */
+    /** @var bool */
     private $changed = true;
 
     /**
