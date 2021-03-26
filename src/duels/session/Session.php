@@ -48,7 +48,7 @@ class Session {
     /** @var int */
     private $tick = 0;
     /** @var int */
-    private $tickUpdated = 0;
+    private $changed = true;
 
     /**
      * Session constructor.
@@ -462,7 +462,15 @@ class Session {
             ]));
         }
 
-        $data = array_merge($data, Translation::getInstance()->translateArray('LOBBY_SCOREBOARD_UPDATE_' . ($this->tickUpdated == 0 ? 'TWITTER' : 'DISCORD')));
+        $data = array_merge($data, Translation::getInstance()->translateArray('LOBBY_SCOREBOARD_UPDATE_' . ($this->changed ? 'TWITTER' : 'DISCORD')));
+
+        if ($this->tick > 4) {
+            $this->tick = 0;
+
+            $this->changed = !$this->changed;
+        }
+
+        $this->tick++;
 
         Duels::getDefaultScoreboard()->setLines($data, $this);
     }
