@@ -2,9 +2,11 @@ LOBBY_SCOREBOARD_TITLE: "&a&lAPATHOS PRACTICE"
 SCOREBOARD_IN_GAME_TITLE: "&a&lAPATHOS PRACTICE"
 LOBBY_SCOREBOARD:
   - "&8----------------- "
+  - "{0}"
+  - "  "
   - " &l&aLobby"
-  - "  Online: {%0}"
-  - "  Fighting: {%1}"
+  - "  Online: {%1}"
+  - "  Fighting: {%2}"
   - ""
 QUEUE_SCOREBOARD:
   - "In Queue"

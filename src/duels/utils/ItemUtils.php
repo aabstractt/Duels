@@ -11,7 +11,6 @@ use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\plugin\PluginException;
@@ -39,13 +38,13 @@ class ItemUtils {
      */
     public static function stringToItem(string $string): Item {
         if (strlen($string) < 2) {
-            throw new PluginException('Invalid string');
+            return Item::get(Item::AIR);
         }
 
         $data = explode(':', $string);
 
         if (!isset($data[0], $data[1], $data[2])) {
-            throw new PluginException('Invalid data');
+            return Item::get(Item::AIR);
         }
 
         $item = Item::get((int) $data[0], (int) $data[1], (int) $data[2]);

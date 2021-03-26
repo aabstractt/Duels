@@ -449,6 +449,7 @@ class Session {
         }
 
         $data = Translation::getInstance()->translateArray('LOBBY_SCOREBOARD', [
+            date('d/m/y'),
             count(Server::getInstance()->getOnlinePlayers()),
             count(Duels::getArenaFactory()->getSessionsPlaying())
         ]);
