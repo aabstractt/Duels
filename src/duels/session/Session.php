@@ -462,7 +462,7 @@ class Session {
             ]));
         }
 
-        $data = array_merge($data, Translation::getInstance()->translateString('LOBBY_SCOREBOARD_UPDATE_' . ($this->tickUpdated == 0 ? 'TWITTER' : 'DISCORD')));
+        $data = array_merge($data, Translation::getInstance()->translateArray('LOBBY_SCOREBOARD_UPDATE_' . ($this->tickUpdated == 0 ? 'TWITTER' : 'DISCORD')));
 
         Duels::getDefaultScoreboard()->setLines($data, $this);
     }
