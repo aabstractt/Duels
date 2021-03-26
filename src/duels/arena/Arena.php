@@ -8,6 +8,8 @@ use duels\arena\task\GameCountDownUpdateTask;
 use duels\arena\task\GameMatchUpdateTask;
 use duels\asyncio\FileCopyAsyncTask;
 use duels\Duels;
+use duels\event\arena\ArenaStartEvent;
+use duels\event\session\SessionJoinArenaEvent;
 use duels\session\Session;
 use duels\task\TaskHandlerStorage;
 use duels\translation\Translation;
@@ -169,6 +171,8 @@ class Arena extends TaskHandlerStorage {
     public function start(): void {
         $this->setStatus(self::STATUS_IN_GAME);
 
+        (new ArenaStartEvent($this))->call();
+
         $this->broadcastMessage('&aThe match has started, good luck!');
 
         foreach ($this->sessions as $session) {
@@ -198,6 +202,8 @@ class Arena extends TaskHandlerStorage {
      */
     public function addSession(Session $session): void {
         $this->sessions[strtolower($session->getName())] = $session;
+
+        (new SessionJoinArenaEvent($session, $this))->call();
 
         $session->setArena($this);
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace duels\queue;
 
 use duels\Duels;
+use duels\event\session\SessionJoinQueueEvent;
 use duels\kit\Kit;
 use duels\session\Session;
 
@@ -69,6 +70,8 @@ class Queue {
         $session->increaseQueueWaitingTime(1);
 
         $this->sessions[strtolower($session->getName())] = $session;
+
+        (new SessionJoinQueueEvent($session, $this))->call();
 
         return true;
     }

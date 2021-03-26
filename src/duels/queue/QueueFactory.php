@@ -30,6 +30,10 @@ class QueueFactory {
 
         Duels::getInstance()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
             $this->handleQueue();
+
+            foreach (Duels::getSessionFactory()->getDefaultSessions() as $session) {
+                $session->updateScoreboard();
+            }
         }), 20);
     }
 

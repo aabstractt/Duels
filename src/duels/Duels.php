@@ -23,7 +23,6 @@ use pocketmine\event\Listener;
 use pocketmine\level\Level as pocketLevel;
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginException;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
@@ -140,6 +139,14 @@ class Duels extends PluginBase {
             return;
         }
 
+        $matches = glob($this->getServer()->getDataPath() . 'worlds/Match-*', GLOB_ONLYDIR);
+
+        if ($matches !== false) {
+            foreach ($matches as $match) FileDeleteAsyncTask::recurse_delete($match);
+        }
+
+        self::$sessionFactory = new SessionFactory();
+
         self::$queueFactory = new QueueFactory();
 
         self::$kitFactory = new KitFactory();
@@ -154,14 +161,6 @@ class Duels extends PluginBase {
 
         self::$arenaFactory = new ArenaFactory();
 
-        $matches = glob($this->getServer()->getDataPath() . 'worlds/Match-*', GLOB_ONLYDIR);
-
-        if ($matches !== false) {
-            foreach ($matches as $match) FileDeleteAsyncTask::recurse_delete($match);
-        }
-
-        self::$sessionFactory = new SessionFactory();
-
         self::$duelFactory = new DuelFactory();
 
         self::$scoreboard = new Scoreboard(null, Translation::getInstance()->translateString('LOBBY_SCOREBOARD_TITLE'), Scoreboard::SIDEBAR, Scoreboard::ASCENDING);
@@ -170,12 +169,6 @@ class Duels extends PluginBase {
         $this->getServer()->getCommandMap()->register(LeaveCommand::class, new LeaveCommand('leave', 'Go to the lobby'));
 
         LeaderboardEntity::registerEntity(LeaderboardEntity::class, true);
-
-        $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
-            foreach ($this::getSessionFactory()->getDefaultSessions() as $session) {
-                $session->updateScoreboard();
-            }
-        }), 20);
     }
 
     /**
